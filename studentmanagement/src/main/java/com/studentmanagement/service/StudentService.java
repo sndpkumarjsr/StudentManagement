@@ -2,13 +2,17 @@ package com.studentmanagement.service;
 
 import com.studentmanagement.dto.StudentDto;
 import com.studentmanagement.dto.StudentResponseDto;
+import com.studentmanagement.entity.School;
+import com.studentmanagement.entity.Status;
 import com.studentmanagement.entity.Student;
+import com.studentmanagement.repository.SchoolRepository;
 import com.studentmanagement.repository.StudentRepository;
 import com.studentmanagement.util.StudentMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -16,10 +20,12 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
+    private final SchoolRepository schoolRepository;
 
-    public StudentService(StudentRepository studentRepository, StudentMapper studentMapper) {
+    public StudentService(StudentRepository studentRepository, StudentMapper studentMapper, SchoolRepository schoolRepository) {
         this.studentRepository = studentRepository;
         this.studentMapper = studentMapper;
+        this.schoolRepository = schoolRepository;
     }
 
     public List<StudentResponseDto> getAll(){
@@ -31,6 +37,9 @@ public class StudentService {
 
     public StudentResponseDto addStudent(StudentDto studentDto){
         Student student = studentMapper.toStudent(studentDto);
+        student.setCreatedBy("Admin");
+        student.setCreatedAt(LocalDateTime.now());
+        student.setStatus(Status.ACTIVE );
         Student savedStudent = studentRepository.save(student);
         return studentMapper.toStudentResponseDto(savedStudent);
     }
@@ -39,6 +48,19 @@ public class StudentService {
         return studentRepository.findById(studentId)
                 .map(studentMapper::toStudentResponseDto)
                 .orElse(null);
+    }
+
+    public StudentResponseDto mapSchool(Integer studentId, Integer schoolId){
+        Optional<School> schoolOpt = schoolRepository.findById(schoolId);
+        Optional<Student> studentOpt = studentRepository.findById(studentId);
+        if(schoolOpt.isPresent() && studentOpt.isPresent()){
+            School school = schoolOpt.get();
+            Student student = studentOpt.get();
+            student.setSchool(school);
+            Student saveStudent = studentRepository.save(student);
+            return  studentMapper.toStudentResponseDto(saveStudent);
+        }
+        return null;
     }
 
 }

@@ -33,4 +33,9 @@ public class StudentController {
         return studentService.findById(studentId);
     }
 
+    @PutMapping
+    public StudentResponseDto mapSchool(@RequestParam Integer studentId, @RequestParam Integer schoolId){
+        return studentService.mapSchool(studentId,schoolId);
+    }
+
 }

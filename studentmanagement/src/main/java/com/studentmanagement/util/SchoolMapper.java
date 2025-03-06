@@ -11,4 +11,6 @@ public class SchoolMapper {
         return new SchoolDto(school.getName());
     }
 
+    public School toSchool(SchoolDto schoolDto){ return new School(schoolDto.name());}
+
 }

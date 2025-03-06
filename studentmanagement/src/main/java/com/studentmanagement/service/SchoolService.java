@@ -33,4 +33,5 @@ public class SchoolService {
         School savedSchool = schoolRepository.save(school);
         return schoolMapper.toSchoolDto(savedSchool);
     }
+
 }
