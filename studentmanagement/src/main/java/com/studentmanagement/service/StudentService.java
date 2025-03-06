@@ -34,4 +34,11 @@ public class StudentService {
         Student savedStudent = studentRepository.save(student);
         return studentMapper.toStudentResponseDto(savedStudent);
     }
+
+    public StudentResponseDto findById(Integer studentId){
+        return studentRepository.findById(studentId)
+                .map(studentMapper::toStudentResponseDto)
+                .orElse(null);
+    }
+
 }

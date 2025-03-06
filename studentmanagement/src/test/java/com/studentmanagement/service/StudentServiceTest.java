@@ -13,7 +13,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class StudentServiceTest {
 
@@ -60,5 +65,57 @@ class StudentServiceTest {
         Mockito.verify(mapper,Mockito.times(1)).toStudentResponseDto(saveStudent);
     }
 
+    @Test
+    public void checkGetAll() {
+        // Given
+        List<Student> students = new ArrayList<>();
+        students.add(new Student("Sandeep", "Kumar", "sndp@mail.com", 20));
+
+        // Mock
+        Mockito.when(repository.findAll()).thenReturn(students);
+        Mockito.when(mapper.toStudentResponseDto(any(Student.class))).thenReturn(new StudentResponseDto("Sandeep", "Kumar", "sndp@mail.com", 20));
+
+        // When
+        List<StudentResponseDto> responseDtos = studentService.getAll();
+
+        // Then
+        Assertions.assertEquals(students.size(), responseDtos.size(), "The size of response DTO list should match the size of the student list.");
+
+        // Additional assertions to check the actual content
+        Assertions.assertEquals("Sandeep", responseDtos.get(0).firstName());
+        Assertions.assertEquals("Kumar", responseDtos.get(0).lastName());
+        Assertions.assertEquals("sndp@mail.com", responseDtos.get(0).email());
+        Assertions.assertEquals(20, responseDtos.get(0).age());
+
+        // Verify that the repository and mapper methods were called
+        Mockito.verify(repository).findAll();
+        Mockito.verify(mapper).toStudentResponseDto(any(Student.class));
+
+        Mockito.verify(repository,times(1)).findAll();
+    }
+
+    @Test
+    public void checkFindById(){
+        //Given
+        Integer studentId = 1;
+
+        Student student = new Student("Sandeep","Kumar","sndp@mail.com",25);
+        StudentResponseDto responseDto = new StudentResponseDto("Sandeep","Kumar","sndp@mail.com",25);
+
+        //Mock
+        Mockito.when(repository.findById(studentId)).thenReturn(Optional.of(student));
+        Mockito.when(mapper.toStudentResponseDto(student)).thenReturn(responseDto);
+
+        //when
+        StudentResponseDto responseDto1 = studentService.findById(studentId);
+
+        Assertions.assertEquals(responseDto1.firstName(),student.getFirstName());
+        Assertions.assertEquals(responseDto1.lastName(),student.getLastName());
+        Assertions.assertEquals(responseDto1.email(),student.getEmail());
+        Assertions.assertEquals(responseDto1.age(),student.getAge());
+
+        Mockito.verify(repository,times(1)).findById(studentId);
+
+    }
 
 }

@@ -28,4 +28,9 @@ public class StudentController {
         return studentService.addStudent(studentDto);
     }
 
+    @GetMapping("/{id}")
+    public StudentResponseDto findById(@PathVariable("id") Integer studentId){
+        return studentService.findById(studentId);
+    }
+
 }
