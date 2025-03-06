@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.time.LocalDate;
 
 class StudentMapperTest {
 
@@ -20,7 +20,7 @@ class StudentMapperTest {
 
     @Test
     public void checkConvertStudentToStudentResponseDto(){
-        Student student = new Student("Sandeep","Kumar","sndp@mail.com",15);
+        Student student = new Student("Sandeep","Kumar","sndp@mail.com",15, LocalDate.of(1995, 12, 16),"9988776655", LocalDate.of(2025,03,20));
 
         StudentResponseDto responseDto = mapper.toStudentResponseDto(student);
 
@@ -31,7 +31,7 @@ class StudentMapperTest {
 
     @Test
     public void checkConvertStudentDtoToStudent(){
-        StudentDto studentDto = new StudentDto("Sandeep","Kumar","sndp@mail.com",28,1);
+        StudentDto studentDto = new StudentDto("Sandeep","Kumar","sndp@mail.com",28, LocalDate.of(1995, 12, 16),"9988776655", LocalDate.of(2025,03,20),1);
 
         Student student = mapper.toStudent(studentDto);
 
