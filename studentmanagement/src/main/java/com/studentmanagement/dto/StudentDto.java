@@ -13,6 +13,7 @@ public record StudentDto(
         @NotEmpty(message = "Email should not be empty")
         @Email(message = "Provide valid email")
         String email,
+        String password,
         int age,
         LocalDate  dateOfBirth,
         String phone,

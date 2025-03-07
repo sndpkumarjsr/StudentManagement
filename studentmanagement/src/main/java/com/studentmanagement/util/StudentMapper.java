@@ -17,6 +17,7 @@ public class StudentMapper {
         student.setFirstName(studentDto.firstName());
         student.setLastName(studentDto.lastName());
         student.setEmail(studentDto.email());
+        student.setPassword(studentDto.password());
         student.setAge(studentDto.age());
         student.setPhone(studentDto.phone());
         student.setDateOfBirth(studentDto.dateOfBirth());
