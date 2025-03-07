@@ -1,5 +1,7 @@
 package com.studentmanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -45,8 +47,7 @@ public class Guardian {
     @Column(insertable = false)
     private LocalDateTime modifiedAt;
 
-    @OneToMany(mappedBy = "parent",cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @OneToMany(mappedBy = "guardian",cascade = CascadeType.ALL)
     private List<Student> students;
 
     public Guardian() {

@@ -12,10 +12,10 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 
-class ParentRepositoryTest {
+class GuardianRepositoryTest {
 
     @Mock
-    private GuardianRepository parentRepository;
+    private GuardianRepository guardianRepository;
 
     @BeforeEach
     void setUp() {
@@ -27,12 +27,12 @@ class ParentRepositoryTest {
         Guardian parent = new Guardian("abc@mail.com","abc@123","ABc","", LocalDate.of(1966,02,19),"9988556644");
         String email = "abc@mail.com";
         Optional<Guardian> optionalParent = Optional.of(parent);
-        Mockito.when(parentRepository.findByEmail(email)).thenReturn(optionalParent);
+        Mockito.when(guardianRepository.findGuardianByEmail(email)).thenReturn(optionalParent);
 
-        Guardian existenceParent = parentRepository.findByEmail(email).get();
+        Guardian existenceParent = guardianRepository.findGuardianByEmail(email).get();
 
         Assertions.assertEquals(email,existenceParent.getEmail());
 
-        Mockito.verify(parentRepository,Mockito.times(1)).findByEmail(email);
+        Mockito.verify(guardianRepository,Mockito.times(1)).findGuardianByEmail(email);
     }
 }

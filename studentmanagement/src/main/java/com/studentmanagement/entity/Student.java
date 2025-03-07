@@ -1,6 +1,7 @@
 package com.studentmanagement.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -47,9 +48,8 @@ public class Student {
     private School school;
 
     @ManyToOne
-    @JoinColumn(name = "parent_id")
-    @JsonBackReference
-    private Guardian parent;
+    @JoinColumn(name = "guardian_id")
+    private Guardian guardian;
 
     public Student() {
     }

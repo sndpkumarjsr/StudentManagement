@@ -1,7 +1,7 @@
 package com.studentmanagement.controller;
 
-import com.studentmanagement.entity.Guardian;  // Corrected class name
-import com.studentmanagement.repository.GuardianRepository;  // Corrected repository name
+import com.studentmanagement.entity.Guardian;
+import com.studentmanagement.repository.GuardianRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/guardians")  // Corrected the route path (typo in "gaurdians")
-public class GuardianController {  // Corrected class name
+@RequestMapping("/guardians")
+public class GuardianController {
 
-    private final GuardianRepository repository;  // Corrected repository name
+    private final GuardianRepository repository;
 
     public GuardianController(GuardianRepository repository) {
         this.repository = repository;
@@ -20,10 +20,18 @@ public class GuardianController {  // Corrected class name
 
     @PostMapping
     public ResponseEntity<Guardian> addNewGuardian(@RequestBody Guardian guardian) {
-        // Add validation or other logic if needed
+        if (guardian == null) {
+            System.out.println("Received null guardian");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        // Log the received guardian object
+        System.out.println("Received Guardian: " + guardian);
+
         Guardian savedGuardian = repository.save(guardian);
         return new ResponseEntity<>(savedGuardian, HttpStatus.CREATED);
     }
+
 
     @GetMapping
     public List<Guardian> getAllGuardians() {
