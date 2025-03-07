@@ -18,12 +18,14 @@ public class Student {
     @Column(unique = true)
     private String email;
 
+    private String password;
+
     private int age;
 
     private LocalDate dateOfBirth;
     @Column(length = 15)
     private String phone;
-
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     private LocalDate dateOfjoining;
@@ -44,13 +46,19 @@ public class Student {
     @JsonBackReference
     private School school;
 
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    @JsonBackReference
+    private Guardian parent;
+
     public Student() {
     }
 
-    public Student(String firstName, String lastName, String email, int age, LocalDate dateOfBirth, String phone, LocalDate dateOfjoining) {
+    public Student(String firstName, String lastName, String email, String password, int age, LocalDate dateOfBirth, String phone, LocalDate dateOfjoining) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.password = password;
         this.age = age;
         this.dateOfBirth = dateOfBirth;
         this.phone = phone;
@@ -176,5 +184,13 @@ public class Student {
 
     public void setDateOfjoining(LocalDate dateOfjoining) {
         this.dateOfjoining = dateOfjoining;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

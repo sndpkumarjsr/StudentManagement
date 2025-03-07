@@ -38,9 +38,9 @@ class StudentServiceTest {
 
     @Test
     public void successfullySaveStudent() {
-        StudentDto dto = new StudentDto("Sandeep","Kumar","sndp@mail.com",20, LocalDate.of(1995, 12, 16),"9988776655", LocalDate.of(2025,03,20),1);
-        Student student = new Student("Sandeep","Kumar","sndp@mail.com",20, LocalDate.of(1995, 12, 16),"9988776655", LocalDate.of(2025,03,20));
-        Student saveStudent = new Student("Sandeep","Kumar","sndp@mail.com",20, LocalDate.of(1995, 12, 16),"9988776655", LocalDate.of(2025,03,20));
+        StudentDto dto = new StudentDto("Sandeep","Kumar","sndp@mail.com","sndp@123",20, LocalDate.of(1995, 12, 16),"9988776655", LocalDate.of(2025,03,20),1);
+        Student student = new Student("Sandeep","Kumar","sndp@mail.com","sndp@123",20, LocalDate.of(1995, 12, 16),"9988776655", LocalDate.of(2025,03,20));
+        Student saveStudent = new Student("Sandeep","Kumar","sndp@mail.com","sndp@123",20, LocalDate.of(1995, 12, 16),"9988776655", LocalDate.of(2025,03,20));
         saveStudent.setId(1);
 
         // Mock the calls
@@ -69,7 +69,7 @@ class StudentServiceTest {
     public void checkGetAll() {
         // Given
         List<Student> students = new ArrayList<>();
-        students.add(new Student("Sandeep", "Kumar", "sndp@mail.com", 20, LocalDate.of(1995, 12, 16),"9988776655", LocalDate.of(2025,03,20)));
+        students.add(new Student("Sandeep", "Kumar", "sndp@mail.com","sndp@123", 20, LocalDate.of(1995, 12, 16),"9988776655", LocalDate.of(2025,03,20)));
 
         // Mock
         Mockito.when(repository.findAll()).thenReturn(students);
@@ -99,7 +99,7 @@ class StudentServiceTest {
         //Given
         Integer studentId = 1;
 
-        Student student = new Student("Sandeep","Kumar","sndp@mail.com",25, LocalDate.of(1995, 12, 16),"9988776655", LocalDate.of(2025,03,20));
+        Student student = new Student("Sandeep","Kumar","sndp@mail.com","sndp@123",25, LocalDate.of(1995, 12, 16),"9988776655", LocalDate.of(2025,03,20));
         StudentResponseDto responseDto = new StudentResponseDto("Sandeep","Kumar","sndp@mail.com",25, LocalDate.of(1995, 12, 16),"9988776655");
 
         //Mock
