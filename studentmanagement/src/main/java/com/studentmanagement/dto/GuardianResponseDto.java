@@ -1,16 +1,16 @@
 package com.studentmanagement.dto;
 
-import com.studentmanagement.entity.Guardian;
+import com.studentmanagement.entity.Student;
 
 import java.time.LocalDate;
+import java.util.List;
 
-public record StudentResponseDto(
+public record GuardianResponseDto(
         String firstName,
         String lastName,
-        String email,
-        int age,
         LocalDate dateOfBirth,
         String phone,
-        Guardian guardian
+        String email,
+        List<Student> students
 ) {
 }

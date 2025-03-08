@@ -193,4 +193,12 @@ public class Student {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public Guardian getGuardian() {
+        return guardian;
+    }
+
+    public void setGuardian(Guardian guardian) {
+        this.guardian = guardian;
+    }
 }

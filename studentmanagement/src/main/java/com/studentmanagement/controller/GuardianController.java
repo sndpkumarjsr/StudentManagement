@@ -1,7 +1,8 @@
 package com.studentmanagement.controller;
 
-import com.studentmanagement.entity.Guardian;
-import com.studentmanagement.repository.GuardianRepository;
+import com.studentmanagement.dto.GuardianDto;
+import com.studentmanagement.dto.GuardianResponseDto;
+import com.studentmanagement.service.GuardianService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,36 +13,31 @@ import java.util.List;
 @RequestMapping("/guardians")
 public class GuardianController {
 
-    private final GuardianRepository repository;
+    private final GuardianService guardianService;
 
-    public GuardianController(GuardianRepository repository) {
-        this.repository = repository;
+    public GuardianController(GuardianService guardianService) {
+        this.guardianService = guardianService;
     }
 
     @PostMapping
-    public ResponseEntity<Guardian> addNewGuardian(@RequestBody Guardian guardian) {
-        if (guardian == null) {
-            System.out.println("Received null guardian");
+    public ResponseEntity<GuardianResponseDto> addNewGuardian(@RequestBody GuardianDto guardianDto) {
+        if (guardianDto == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
-        // Log the received guardian object
-        System.out.println("Received Guardian: " + guardian);
-
-        Guardian savedGuardian = repository.save(guardian);
-        return new ResponseEntity<>(savedGuardian, HttpStatus.CREATED);
+        return new ResponseEntity<>(guardianService.add(guardianDto), HttpStatus.CREATED);
     }
 
 
     @GetMapping
-    public List<Guardian> getAllGuardians() {
-        return repository.findAll();
+    public ResponseEntity<List<GuardianResponseDto>> getAllGuardians() {
+        return ResponseEntity.ok(guardianService.getAll());
     }
 
     @GetMapping("/{email}")
-    public ResponseEntity<Guardian> getByEmail(@PathVariable String email) {
-        return repository.findGuardianByEmail(email)
-                .map(guardian -> new ResponseEntity<>(guardian, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));  // Returns 404 if not found
+    public ResponseEntity<GuardianResponseDto> getByEmail(@PathVariable String email) {
+        GuardianResponseDto guardianResponseDto = guardianService.getByEmail(email);
+        if(guardianResponseDto == null)
+            return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(guardianResponseDto);
     }
 }

@@ -2,6 +2,7 @@ package com.studentmanagement.service;
 
 import com.studentmanagement.dto.StudentDto;
 import com.studentmanagement.dto.StudentResponseDto;
+import com.studentmanagement.entity.Guardian;
 import com.studentmanagement.entity.Student;
 import com.studentmanagement.repository.StudentRepository;
 import com.studentmanagement.util.StudentMapper;
@@ -46,7 +47,7 @@ class StudentServiceTest {
         // Mock the calls
         Mockito.when(mapper.toStudent(dto)).thenReturn(student);
         Mockito.when(repository.save(student)).thenReturn(saveStudent);
-        Mockito.when(mapper.toStudentResponseDto(saveStudent)).thenReturn(new StudentResponseDto("Sandeep","Kumar","sndp@mail.com",20,LocalDate.of(1995,12,16),"9988776655"));
+        Mockito.when(mapper.toStudentResponseDto(saveStudent)).thenReturn(new StudentResponseDto("Sandeep","Kumar","sndp@mail.com",20,LocalDate.of(1995,12,16),"9988776655",new Guardian()));
 
         // Call the service method
         StudentResponseDto responseDto = studentService.addStudent(dto);
@@ -73,7 +74,7 @@ class StudentServiceTest {
 
         // Mock
         Mockito.when(repository.findAll()).thenReturn(students);
-        Mockito.when(mapper.toStudentResponseDto(any(Student.class))).thenReturn(new StudentResponseDto("Sandeep", "Kumar", "sndp@mail.com", 20, LocalDate.of(1995, 12, 16),"9988776655"));
+        Mockito.when(mapper.toStudentResponseDto(any(Student.class))).thenReturn(new StudentResponseDto("Sandeep", "Kumar", "sndp@mail.com", 20, LocalDate.of(1995, 12, 16),"9988776655",new Guardian()));
 
         // When
         List<StudentResponseDto> responseDtos = studentService.getAll();
@@ -100,7 +101,7 @@ class StudentServiceTest {
         Integer studentId = 1;
 
         Student student = new Student("Sandeep","Kumar","sndp@mail.com","sndp@123",25, LocalDate.of(1995, 12, 16),"9988776655", LocalDate.of(2025,03,20));
-        StudentResponseDto responseDto = new StudentResponseDto("Sandeep","Kumar","sndp@mail.com",25, LocalDate.of(1995, 12, 16),"9988776655");
+        StudentResponseDto responseDto = new StudentResponseDto("Sandeep","Kumar","sndp@mail.com",25, LocalDate.of(1995, 12, 16),"9988776655",new Guardian());
 
         //Mock
         Mockito.when(repository.findById(studentId)).thenReturn(Optional.of(student));

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class StudentMapper {
     public StudentResponseDto toStudentResponseDto(Student student){
-        return new StudentResponseDto(student.getFirstName(),student.getLastName(),student.getEmail(),student.getAge(),student.getDateOfBirth(),student.getPhone());
+        return new StudentResponseDto(student.getFirstName(),student.getLastName(),student.getEmail(),student.getAge(),student.getDateOfBirth(),student.getPhone(),student.getGuardian());
     }
 
     public Student toStudent(StudentDto studentDto){

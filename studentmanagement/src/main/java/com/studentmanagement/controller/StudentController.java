@@ -33,9 +33,14 @@ public class StudentController {
         return studentService.findById(studentId);
     }
 
-    @PutMapping
+    @PutMapping("/schools")
     public StudentResponseDto mapSchool(@RequestParam Integer studentId, @RequestParam Integer schoolId){
         return studentService.mapSchool(studentId,schoolId);
+    }
+
+    @PutMapping("/guardians")
+    public StudentResponseDto mapGuardian(@RequestParam Integer studentId,@RequestParam Integer guardianId){
+        return studentService.mapGuardian(studentId,guardianId);
     }
 
 }
