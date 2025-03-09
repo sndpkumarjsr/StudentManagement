@@ -1,11 +1,9 @@
 package com.studentmanagement.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class ExamType {
@@ -32,6 +30,9 @@ public class ExamType {
 
     @Column(insertable = false)
     private LocalDateTime modifiedAt;
+
+    @OneToMany(mappedBy = "examType", cascade = CascadeType.ALL)
+    private List<Exam> exams;
 
     public ExamType() {
     }
@@ -113,5 +114,13 @@ public class ExamType {
 
     public void setModifiedAt(LocalDateTime modifiedAt) {
         this.modifiedAt = modifiedAt;
+    }
+
+    public List<Exam> getExams() {
+        return exams;
+    }
+
+    public void setExams(List<Exam> exams) {
+        this.exams = exams;
     }
 }
