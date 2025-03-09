@@ -55,7 +55,28 @@ class ExamTypeServiceTest {
         Mockito.verify(examTypeRepository,times(1)).findAll();
     }
 
+    @Test
     public void checkAddNewExamType(){
+        ExamType examType = new ExamType("First Term",100,33,"Must Obtain Passing Marks");
+        ExamTypeDto examTypeDto = new ExamTypeDto("First Term",100,33,"Must Obtain Passing Marks");
+        ExamType saveExamType = new ExamType("First Term",100,33,"Must Obtain Passing Marks");
+        saveExamType.setId(1);
+
+        //Mock Call
+        Mockito.when(examTypeMapper.toExamType(examTypeDto)).thenReturn(examType);
+        Mockito.when(examTypeRepository.save(examType)).thenReturn(saveExamType);
+        Mockito.when(examTypeMapper.toExamTypeDto(saveExamType)).thenReturn(new ExamTypeDto("First Term",100,33,"Must Obtain Passing Marks"));
+
+        ExamTypeDto saveDto = examTypeService.add(examTypeDto);
+
+        Assertions.assertEquals(saveDto.examName(),examTypeDto.examName());
+        Assertions.assertEquals(saveDto.totalMarks(),examTypeDto.totalMarks());
+        Assertions.assertEquals(saveDto.passMarks(),examTypeDto.passMarks());
+        Assertions.assertEquals(saveDto.description(),examTypeDto.description());
+
+        Mockito.verify(examTypeMapper,Mockito.times(1)).toExamType(examTypeDto);
+        Mockito.verify(examTypeMapper,Mockito.times(1)).toExamTypeDto(saveExamType);
+        Mockito.verify(examTypeRepository,Mockito.times(1)).save(examType);
 
     }
 }
