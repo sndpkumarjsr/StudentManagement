@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Exam {
@@ -18,6 +19,9 @@ public class Exam {
     @ManyToOne
     @JoinColumn(name = "examType_id")
     private ExamType examType;
+
+    @OneToMany(mappedBy = "exam", cascade = CascadeType.ALL)
+    private List<ExamResult> examResults;
 
     @Column(updatable = false)
     private String createdBy;
@@ -101,5 +105,13 @@ public class Exam {
 
     public void setModifiedAt(LocalDateTime modifiedAt) {
         this.modifiedAt = modifiedAt;
+    }
+
+    public List<ExamResult> getExamResults() {
+        return examResults;
+    }
+
+    public void setExamResults(List<ExamResult> examResults) {
+        this.examResults = examResults;
     }
 }

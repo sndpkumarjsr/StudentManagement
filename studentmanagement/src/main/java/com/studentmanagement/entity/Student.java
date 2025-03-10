@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Student {
@@ -50,6 +51,9 @@ public class Student {
     @ManyToOne
     @JoinColumn(name = "guardian_id")
     private Guardian guardian;
+
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    private List<ExamResult> examResults;
 
     public Student() {
     }

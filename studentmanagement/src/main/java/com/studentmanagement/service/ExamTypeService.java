@@ -6,6 +6,7 @@ import com.studentmanagement.repository.ExamTypeRepository;
 import com.studentmanagement.util.ExamTypeMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,6 +31,8 @@ public class ExamTypeService {
 
     public ExamTypeDto add(ExamTypeDto examTypeDto){
         ExamType examType = examTypeMapper.toExamType(examTypeDto);
+        examType.setCreatedBy("Admin");
+        examType.setCreatedAt(LocalDateTime.now());
         if(examType == null)
             return null;
         ExamType savedExamType = examTypeRepository.save(examType);
