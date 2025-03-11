@@ -1,7 +1,6 @@
 package com.studentmanagement.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -54,6 +53,10 @@ public class Student {
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private List<ExamResult> examResults;
+
+    @ManyToMany
+    private List<ClassRoom> classRooms;
+
 
     public Student() {
     }
@@ -204,5 +207,21 @@ public class Student {
 
     public void setGuardian(Guardian guardian) {
         this.guardian = guardian;
+    }
+
+    public List<ExamResult> getExamResults() {
+        return examResults;
+    }
+
+    public void setExamResults(List<ExamResult> examResults) {
+        this.examResults = examResults;
+    }
+
+    public List<ClassRoom> getClassRooms() {
+        return classRooms;
+    }
+
+    public void setClassRooms(List<ClassRoom> classRooms) {
+        this.classRooms = classRooms;
     }
 }

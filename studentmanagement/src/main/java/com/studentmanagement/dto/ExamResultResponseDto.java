@@ -8,6 +8,7 @@ public record ExamResultResponseDto(
     double passMarks,
     String examName,
     LocalDate startDate,
+    double marks,
     String StudentName
 ) {
 }

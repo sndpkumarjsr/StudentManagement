@@ -37,24 +37,30 @@ public class ExamResultService {
                 .collect(Collectors.toList());
     }
 
-    public ExamResultResponseDto add(ExamResultDto examResultDto){
-        ExamResult examResult =  new ExamResult();
+    public ExamResultResponseDto add(ExamResultDto examResultDto) {
+        ExamResult examResult = new ExamResult();
         examResult.setMarks(examResultDto.marks());
 
+        // Fetch student and exam
         Optional<Student> studentOpt = studentRepository.findById(examResultDto.studentId());
         Optional<Exam> examOpt = examRepository.findById(examResultDto.examId());
 
-        if(studentOpt.isPresent() && examOpt.isPresent()){
+        if (studentOpt.isPresent() && examOpt.isPresent()) {
             Student student = studentOpt.get();
             Exam exam = examOpt.get();
 
+            // Set exam and student to the result
             examResult.setExam(exam);
             examResult.setStudent(student);
             examResult.setCreatedAt(LocalDateTime.now());
             examResult.setCreatedBy("Admin");
+
+            // Save and return response
             ExamResult saveExamResult = examResultRepository.save(examResult);
-            return examResultMapper.toExamResultResponseDto(examResult);
+            return examResultMapper.toExamResultResponseDto(saveExamResult);
         }
-        return null;
+
+        // Add logging or return a specific response
+        throw new IllegalArgumentException("Student or Exam not found.");
     }
 }
