@@ -43,4 +43,9 @@ public class StudentController {
         return studentService.mapGuardian(studentId,guardianId);
     }
 
+    @PutMapping("/classrooms")
+    public StudentResponseDto mapClassRooom(@RequestParam Integer studentId,@RequestParam Integer classroomId){
+        return studentService.mapClassRoom(studentId,classroomId);
+    }
+
 }

@@ -22,6 +22,7 @@ public class ExamResultMapper {
                 examResult.getExam().getExamType().getPassMarks(),
                 examResult.getExam().getName(),
                 examResult.getExam().getStartDate(),
+                examResult.getMarks(),
                 examResult.getStudent().getFirstName()+ " " +examResult.getStudent().getLastName()
                 );
     }
