@@ -1,7 +1,10 @@
 package com.studentmanagement.controller;
 
-import com.studentmanagement.entity.ClassRoom;
-import com.studentmanagement.repository.ClassRoomRepository;
+import com.studentmanagement.dto.ClassRoomDto;
+import com.studentmanagement.dto.ClassRoomResponseDto;
+import com.studentmanagement.service.ClassRoomService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,19 +13,27 @@ import java.util.List;
 @RequestMapping("/classrooms")
 public class ClassRoomController {
 
-    private final ClassRoomRepository classRoomRepository;
+    private final ClassRoomService classRoomService;
 
-    public ClassRoomController(ClassRoomRepository classRoomRepository) {
-        this.classRoomRepository = classRoomRepository;
+    public ClassRoomController(ClassRoomService classRoomService) {
+        this.classRoomService = classRoomService;
     }
 
     @GetMapping
-    public List<ClassRoom> getAll(){
-        return classRoomRepository.findAll();
+    public ResponseEntity<List<ClassRoomResponseDto>> getAll(){
+        var list = classRoomService.getAll();
+        if(list.isEmpty())
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(list);
     }
 
     @PostMapping
-    public ClassRoom addNewClassRoom(@RequestBody ClassRoom classRoom){
-        return classRoomRepository.save(classRoom);
+    public ResponseEntity<ClassRoomResponseDto> addNewClassRoom(@RequestBody ClassRoomDto classRoomDto){
+        if(classRoomDto == null)
+            return ResponseEntity.badRequest().build();
+        var savedRoom = classRoomService.add(classRoomDto);
+        if(savedRoom == null)
+            return ResponseEntity.internalServerError().build();
+        return new ResponseEntity<>(savedRoom, HttpStatus.CREATED);
     }
 }
