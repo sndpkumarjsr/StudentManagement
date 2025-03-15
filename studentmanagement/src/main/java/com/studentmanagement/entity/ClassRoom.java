@@ -28,6 +28,19 @@ public class ClassRoom {
     )
     private List<Student> students;
 
+    @ManyToOne
+    @JoinColumn(name = "grade_id")
+    private Grade grade;
+
+    public ClassRoom() {
+    }
+
+    public ClassRoom(String year, char section, Status status, String remarks) {
+        this.year = year;
+        this.section = section;
+        this.status = status;
+        this.remarks = remarks;
+    }
 
     public Integer getId() {
         return id;
@@ -75,5 +88,13 @@ public class ClassRoom {
 
     public void setStudents(List<Student> students) {
         this.students = students;
+    }
+
+    public Grade getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Grade grade) {
+        this.grade = grade;
     }
 }
