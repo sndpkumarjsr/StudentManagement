@@ -1,7 +1,10 @@
 package com.studentmanagement.controller;
 
+import com.studentmanagement.dto.GradeDto;
 import com.studentmanagement.entity.Grade;
 import com.studentmanagement.repository.GradeRepository;
+import com.studentmanagement.service.GradeService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,19 +13,25 @@ import java.util.List;
 @RequestMapping("/grades")
 public class GradeController {
 
-    private final GradeRepository repository;
+    private final GradeService gradeService;
 
-    public GradeController(GradeRepository repository) {
-        this.repository = repository;
+    public GradeController(GradeService gradeService) {
+        this.gradeService = gradeService;
     }
 
     @GetMapping
-    public List<Grade> getAll(){
-        return repository.findAll();
+    public ResponseEntity<List<GradeDto>> getAll(){
+        var list = gradeService.getAll();
+        if(list.isEmpty())
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(list);
     }
 
     @PostMapping
-    public Grade addNewGrade(@RequestBody Grade grade){
-        return repository.save(grade);
+    public ResponseEntity<GradeDto> addNewGrade(@RequestBody GradeDto gradeDto){
+        var grade = gradeService.add(gradeDto);
+        if(grade ==  null)
+            return ResponseEntity.internalServerError().build();
+        return ResponseEntity.ok(grade);
     }
 }
