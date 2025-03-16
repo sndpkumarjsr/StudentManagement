@@ -7,6 +7,7 @@ import com.studentmanagement.repository.ClassRoomRepository;
 import com.studentmanagement.util.ClassRoomMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +30,8 @@ public class ClassRoomService {
 
     public ClassRoomResponseDto add(ClassRoomDto dto){
         ClassRoom classRoom = classRoomMapper.toClassRoom(dto);
+        classRoom.setCreatedBy("Admin");
+        classRoom.setCreatedAt(LocalDateTime.now());
         ClassRoom saveClassRoom = classRoomRepository.save(classRoom);
         return classRoomMapper.toClassRoomResponseDto(saveClassRoom);
     }

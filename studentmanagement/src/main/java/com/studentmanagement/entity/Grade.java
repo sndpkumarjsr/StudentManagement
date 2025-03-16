@@ -2,6 +2,7 @@ package com.studentmanagement.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -14,6 +15,23 @@ public class Grade {
 
     @OneToMany(mappedBy = "grade", cascade = CascadeType.ALL)
     private List<ClassRoom> classRooms;
+
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
+    @Column(updatable = false)
+    private String createdBy;
+    @Column(insertable = false)
+    private String modifiedBy;
+    @Column(insertable = false)
+    private LocalDateTime modifiedAt;
+
+    public Grade() {
+    }
+
+    public Grade(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 
     public Integer getId() {
         return id;
@@ -45,5 +63,37 @@ public class Grade {
 
     public void setClassRooms(List<ClassRoom> classRooms) {
         this.classRooms = classRooms;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
+    }
+
+    public LocalDateTime getModifiedAt() {
+        return modifiedAt;
+    }
+
+    public void setModifiedAt(LocalDateTime modifiedAt) {
+        this.modifiedAt = modifiedAt;
     }
 }
