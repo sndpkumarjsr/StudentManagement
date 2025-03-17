@@ -1,8 +1,6 @@
 package com.studentmanagement.controller;
 
 import com.studentmanagement.dto.GradeDto;
-import com.studentmanagement.entity.Grade;
-import com.studentmanagement.repository.GradeRepository;
 import com.studentmanagement.service.GradeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
