@@ -3,6 +3,7 @@ package com.studentmanagement.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Course {
@@ -28,6 +29,10 @@ public class Course {
     @Column(insertable = false)
     private LocalDateTime modifiedAt;
 
+    @OneToMany(mappedBy = "course",cascade = CascadeType.ALL)
+    private List<ExamResult> examResults;
+    @OneToOne(mappedBy = "course",cascade = CascadeType.ALL)
+    private Teacher teacher;
     public Course() {
     }
 
@@ -98,5 +103,21 @@ public class Course {
 
     public void setModifiedAt(LocalDateTime modifiedAt) {
         this.modifiedAt = modifiedAt;
+    }
+
+    public List<ExamResult> getExamResults() {
+        return examResults;
+    }
+
+    public void setExamResults(List<ExamResult> examResults) {
+        this.examResults = examResults;
+    }
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
     }
 }

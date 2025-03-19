@@ -54,7 +54,7 @@ public class Student {
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private List<ExamResult> examResults;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "students")
     private List<ClassRoom> classRooms;
 
 

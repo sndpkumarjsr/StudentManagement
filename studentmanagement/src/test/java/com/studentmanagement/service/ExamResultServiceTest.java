@@ -93,7 +93,7 @@ class ExamResultServiceTest {
 //    @Test
 //    public void checkAdd() {
 //        // Prepare test data
-//        ExamResultDto dto = new ExamResultDto(55.1, 1, 1);
+//        ExamResultDto dto = new ExamResultDto(55.1, 1, 1,1);
 //
 //        // Create ExamType, Exam, and Student entities
 //        ExamType examType = new ExamType("First Term", 100, 33, "must obtain Pass marks");

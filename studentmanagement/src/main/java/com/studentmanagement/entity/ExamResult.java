@@ -32,6 +32,10 @@ public class ExamResult {
     @Column(insertable = false)
     private LocalDateTime modifiedAt;
 
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
+
     public ExamResult() {
     }
 
@@ -103,5 +107,13 @@ public class ExamResult {
 
     public void setModifiedAt(LocalDateTime modifiedAt) {
         this.modifiedAt = modifiedAt;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
     }
 }
