@@ -2,9 +2,11 @@ package com.studentmanagement.service;
 
 import com.studentmanagement.dto.ExamResultDto;
 import com.studentmanagement.dto.ExamResultResponseDto;
+import com.studentmanagement.entity.Course;
 import com.studentmanagement.entity.Exam;
 import com.studentmanagement.entity.ExamResult;
 import com.studentmanagement.entity.Student;
+import com.studentmanagement.repository.CourseRepository;
 import com.studentmanagement.repository.ExamRepository;
 import com.studentmanagement.repository.ExamResultRepository;
 import com.studentmanagement.repository.StudentRepository;
@@ -23,12 +25,14 @@ public class ExamResultService {
     private final ExamResultRepository examResultRepository;
     private final StudentRepository studentRepository;
     private final ExamRepository examRepository;
+    private final CourseRepository courseRepository;
 
-    public ExamResultService(ExamResultMapper examResultMapper, ExamResultRepository examResultRepository, StudentRepository studentRepository, ExamRepository examRepository) {
+    public ExamResultService(ExamResultMapper examResultMapper, ExamResultRepository examResultRepository, StudentRepository studentRepository, ExamRepository examRepository, CourseRepository courseRepository) {
         this.examResultMapper = examResultMapper;
         this.examResultRepository = examResultRepository;
         this.studentRepository = studentRepository;
         this.examRepository = examRepository;
+        this.courseRepository = courseRepository;
     }
 
     public List<ExamResultResponseDto> getAll(){
@@ -44,14 +48,18 @@ public class ExamResultService {
         // Fetch student and exam
         Optional<Student> studentOpt = studentRepository.findById(examResultDto.studentId());
         Optional<Exam> examOpt = examRepository.findById(examResultDto.examId());
+        Optional<Course> courseOpt = courseRepository.findById(examResultDto.courseId());
 
-        if (studentOpt.isPresent() && examOpt.isPresent()) {
+
+        if (studentOpt.isPresent() && examOpt.isPresent() && courseOpt.isPresent()) {
             Student student = studentOpt.get();
             Exam exam = examOpt.get();
+            Course course = courseOpt.get();
 
             // Set exam and student to the result
             examResult.setExam(exam);
             examResult.setStudent(student);
+            examResult.setCourse(course);
             examResult.setCreatedAt(LocalDateTime.now());
             examResult.setCreatedBy("Admin");
 
