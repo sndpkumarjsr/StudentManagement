@@ -57,6 +57,9 @@ public class Student {
     @ManyToMany(mappedBy = "students")
     private List<ClassRoom> classRooms;
 
+    @OneToMany(mappedBy = "student",cascade = CascadeType.ALL)
+    private List<Attendance> attendances;
+
 
     public Student() {
     }
@@ -223,5 +226,13 @@ public class Student {
 
     public void setClassRooms(List<ClassRoom> classRooms) {
         this.classRooms = classRooms;
+    }
+
+    public List<Attendance> getAttendances() {
+        return attendances;
+    }
+
+    public void setAttendances(List<Attendance> attendances) {
+        this.attendances = attendances;
     }
 }
