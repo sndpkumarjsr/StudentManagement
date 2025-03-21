@@ -1,5 +1,6 @@
 package com.studentmanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -30,6 +31,7 @@ public class Teacher {
     @Column(insertable = false)
     private LocalDateTime modifiedAt;
     @OneToOne
+    @JsonManagedReference
     private Course course;
 
     public Teacher() {

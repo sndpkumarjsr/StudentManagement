@@ -1,5 +1,7 @@
 package com.studentmanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -18,6 +20,7 @@ public class Course {
 
     @ManyToOne
     @JoinColumn(name = "grade_id")
+    @JsonBackReference
     private Grade grade;
 
     @Column(updatable = false)
@@ -30,8 +33,10 @@ public class Course {
     private LocalDateTime modifiedAt;
 
     @OneToMany(mappedBy = "course",cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<ExamResult> examResults;
     @OneToOne(mappedBy = "course",cascade = CascadeType.ALL)
+    @JsonBackReference
     private Teacher teacher;
     public Course() {
     }

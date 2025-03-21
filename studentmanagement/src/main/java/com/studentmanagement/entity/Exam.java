@@ -1,5 +1,7 @@
 package com.studentmanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -18,9 +20,11 @@ public class Exam {
 
     @ManyToOne
     @JoinColumn(name = "examType_id")
+    @JsonBackReference
     private ExamType examType;
 
     @OneToMany(mappedBy = "exam", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<ExamResult> examResults;
 
     @Column(updatable = false)

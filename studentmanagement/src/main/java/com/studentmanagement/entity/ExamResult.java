@@ -1,5 +1,6 @@
 package com.studentmanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -14,10 +15,12 @@ public class ExamResult {
 
     @ManyToOne
     @JoinColumn(name = "exam_id")
+    @JsonBackReference
     private Exam exam;
 
     @ManyToOne
     @JoinColumn(name = "student_id")
+    @JsonBackReference
     private Student student;
 
     @Column(updatable = false)
@@ -34,6 +37,7 @@ public class ExamResult {
 
     @ManyToOne
     @JoinColumn(name = "course_id")
+    @JsonBackReference
     private Course course;
 
     public ExamResult() {
