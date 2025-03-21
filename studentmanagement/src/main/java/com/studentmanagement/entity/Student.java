@@ -1,6 +1,7 @@
 package com.studentmanagement.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -9,55 +10,66 @@ import java.util.List;
 
 @Entity
 public class Student {
+
     @Id
     @GeneratedValue
     private Integer id;
+
     @Column(length = 50)
     private String firstName;
     @Column(length = 50)
     private String lastName;
     @Column(unique = true)
     private String email;
-
     private String password;
-
     private int age;
-
     private LocalDate dateOfBirth;
+
     @Column(length = 15)
     private String phone;
+
     @Enumerated(EnumType.STRING)
     private Status status;
-
     private LocalDate dateOfjoining;
-
     private LocalDateTime lastLogin;
+
     @Column(updatable = false)
-    private  LocalDateTime createdAt;
+    private LocalDateTime createdAt;
+
     @Column(updatable = false)
     private String createdBy;
+
     @Column(insertable = false)
     private String modifiedBy;
+
     @Column(insertable = false)
     private LocalDateTime modifiedAt;
 
-
+    // Bidirectional one-to-many relationship (School -> Student)
     @ManyToOne
     @JoinColumn(name = "school_id")
     @JsonBackReference
     private School school;
 
+    // Bidirectional one-to-one relationship (Guardian -> Student)
     @ManyToOne
     @JoinColumn(name = "guardian_id")
+    @JsonBackReference
     private Guardian guardian;
 
+    // One-to-many relationship with ExamResult
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<ExamResult> examResults;
 
+    // Many-to-many relationship with ClassRoom
     @ManyToMany(mappedBy = "students")
+    @JsonManagedReference
     private List<ClassRoom> classRooms;
 
-    @OneToMany(mappedBy = "student",cascade = CascadeType.ALL)
+    // One-to-many relationship with Attendance
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Attendance> attendances;
 
 

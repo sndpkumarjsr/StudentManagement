@@ -1,6 +1,7 @@
 package com.studentmanagement.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -27,10 +28,12 @@ public class ClassRoom {
             joinColumns = @JoinColumn(name = "classroom_id"),
             inverseJoinColumns = @JoinColumn(name = "student_id")
     )
+    @JsonBackReference
     private List<Student> students;
 
     @ManyToOne
     @JoinColumn(name = "grade_id")
+    @JsonBackReference
     private Grade grade;
 
     @Column(updatable = false)

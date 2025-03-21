@@ -1,5 +1,6 @@
 package com.studentmanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -14,9 +15,11 @@ public class Grade {
     private String description;
 
     @OneToMany(mappedBy = "grade", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<ClassRoom> classRooms;
 
     @OneToMany(mappedBy = "grade", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Course> courses;
 
     @Column(updatable = false)

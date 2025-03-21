@@ -1,5 +1,6 @@
 package com.studentmanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -32,6 +33,7 @@ public class ExamType {
     private LocalDateTime modifiedAt;
 
     @OneToMany(mappedBy = "examType", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Exam> exams;
 
     public ExamType() {
