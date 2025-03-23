@@ -8,6 +8,7 @@ import com.studentmanagement.repository.StudentRepository;
 import com.studentmanagement.util.AttendanceMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -50,12 +51,14 @@ public class AttendanceService {
         if(studentOpt.isPresent()){
             Student student = studentOpt.get();
             attendance.setStudent(student);
+            attendance.setCreatedAt(LocalDateTime.now());
+            attendance.setCreatedBy("Admin");
 
             Attendance savedAttendance = attendanceRepository.save(attendance);
 
             return attendanceMapper.toAttendanceDto(savedAttendance);
         }
-        return null;
+        throw new IllegalArgumentException("Incorrect Data");
     }
 
     public List<AttendanceDto> addAll(List<AttendanceDto> dtos){
@@ -69,6 +72,27 @@ public class AttendanceService {
         }
         List<Attendance> savedAttendance = attendanceRepository.saveAll(attendances);
         return savedAttendance.stream().map(attendanceMapper::toAttendanceDto).collect(Collectors.toList());
+    }
+
+    public List<AttendanceDto> getByStudentId(Integer studentId){
+        return attendanceRepository.findByStudentId(studentId).stream()
+                .map(attendanceMapper::toAttendanceDto)
+                .collect(Collectors.toList());
+    }
+
+    public AttendanceDto updateAttendance(AttendanceDto dto){
+        Optional<Attendance> attendanceOpt = attendanceRepository.findByDateAndStudentId(dto.date(), dto.studentId());
+        if(attendanceOpt.isPresent()){
+            Attendance attendance = attendanceOpt.get();
+            attendance.setIsPresent(dto.isPresent());
+            attendance.setRemarks(dto.remarks());
+            attendance.setModifiedBy("Admin");
+            attendance.setModifiedAt(LocalDateTime.now());
+
+            Attendance updatedAttendance = attendanceRepository.save(attendance);
+            return attendanceMapper.toAttendanceDto(updatedAttendance);
+        }
+        throw new IllegalArgumentException("Incorrect Data");
     }
 
 }

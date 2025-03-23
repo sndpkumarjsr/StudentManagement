@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 public class Student {
@@ -15,17 +16,17 @@ public class Student {
     @GeneratedValue
     private Integer id;
 
-    @Column(length = 50)
+    @Column(length = 50, nullable = false)
     private String firstName;
     @Column(length = 50)
     private String lastName;
-    @Column(unique = true)
+    @Column(unique = true,nullable = false)
     private String email;
     private String password;
     private int age;
     private LocalDate dateOfBirth;
 
-    @Column(length = 15)
+    @Column(length = 15,unique = true)
     private String phone;
 
     @Enumerated(EnumType.STRING)
@@ -72,6 +73,9 @@ public class Student {
     @JsonManagedReference
     private List<Attendance> attendances;
 
+    @Column(unique = true, updatable = false)
+    private String admissionNumber;
+
 
     public Student() {
     }
@@ -85,6 +89,17 @@ public class Student {
         this.dateOfBirth = dateOfBirth;
         this.phone = phone;
         this.dateOfjoining = dateOfjoining;
+    }
+
+    @PrePersist
+    public void generateAdmissionNumber() {
+        // Example: ADM-2023-0001 (Year + Sequence)
+        this.admissionNumber = "ADM-" + LocalDate.now().getYear() + "-" + String.format("%04d", getNextSequenceValue());
+    }
+    private int getNextSequenceValue() {
+        // Implement logic to get the next sequence value from the database or another source
+        // This is just a placeholder
+        return 1; // Replace with actual logic
     }
 
     public School getSchool() {
@@ -246,5 +261,13 @@ public class Student {
 
     public void setAttendances(List<Attendance> attendances) {
         this.attendances = attendances;
+    }
+
+    public String getAdmissionNumber() {
+        return admissionNumber;
+    }
+
+    public void setAdmissionNumber(String admissionNumber) {
+        this.admissionNumber = admissionNumber;
     }
 }

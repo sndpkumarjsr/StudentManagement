@@ -35,6 +35,9 @@ public class MyControllerAdvice {
         return new ResponseEntity<>("An unexpected error : "+exp.getMessage(),HttpStatus.BAD_REQUEST);
     }
 
-
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException ex){
+        return new ResponseEntity<>("An unexpected error : " + ex.getMessage(),HttpStatus.BAD_REQUEST);
+    }
 
 }
