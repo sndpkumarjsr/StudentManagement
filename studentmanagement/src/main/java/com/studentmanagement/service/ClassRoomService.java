@@ -33,6 +33,7 @@ public class ClassRoomService {
                 .collect(Collectors.toList());
     }
 
+
     public ClassRoomResponseDto add(ClassRoomDto dto){
         ClassRoom classRoom = classRoomMapper.toClassRoom(dto);
         classRoom.setCreatedBy("Admin");
@@ -54,6 +55,6 @@ public class ClassRoomService {
             ClassRoom saveClassRoom = classRoomRepository.save(classRoom);
             return saveClassRoom;
         }
-        return null;
+        throw new IllegalArgumentException("Incorrect Data");
     }
 }

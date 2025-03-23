@@ -10,6 +10,7 @@ import com.studentmanagement.repository.StudentRepository;
 import com.studentmanagement.util.StudentMapper;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +35,7 @@ public class StudentService {
 
     public List<StudentResponseDto> getAll(){
         return studentRepository.findAll()
-                .stream()
+                .stream().filter(i->i.getStatus().toString().equals("ACTIVE"))
                 .map(studentMapper::toStudentResponseDto)
                 .collect(Collectors.toList());
     }
@@ -45,47 +46,50 @@ public class StudentService {
         student.setCreatedAt(LocalDateTime.now());
         student.setStatus(Status.ACTIVE );
         Student savedStudent = studentRepository.save(student);
-        return studentMapper.toStudentResponseDto(savedStudent);
+        if(savedStudent != null)
+            return studentMapper.toStudentResponseDto(savedStudent);
+        throw new IllegalArgumentException("Fail to save. Please check the fields.");
     }
 
-    public StudentResponseDto findById(Integer studentId){
-        return studentRepository.findById(studentId)
-                .map(studentMapper::toStudentResponseDto)
-                .orElse(null);
+    public StudentResponseDto findById(String admissionNumber){
+        Optional<Student> studentOpt = studentRepository.findByAdmissionNumber(admissionNumber);
+        if(studentOpt.isPresent() && studentOpt.get().getStatus().toString().equals("ACTIVE"))
+            return studentMapper.toStudentResponseDto(studentOpt.get());
+        throw new IllegalArgumentException("Student Not Found");
     }
 
     public StudentResponseDto mapSchool(Integer studentId, Integer schoolId){
         Optional<School> schoolOpt = schoolRepository.findById(schoolId);
         Optional<Student> studentOpt = studentRepository.findById(studentId);
-        if(schoolOpt.isPresent() && studentOpt.isPresent()){
+        if(schoolOpt.isPresent() && studentOpt.isPresent() && studentOpt.get().getStatus().toString().equals("ACTIVE")){
             School school = schoolOpt.get();
             Student student = studentOpt.get();
             student.setSchool(school);
             Student saveStudent = studentRepository.save(student);
             return  studentMapper.toStudentResponseDto(saveStudent);
         }
-        return null;
+        throw new IllegalArgumentException("Fields is incorrect.");
     }
 
     public StudentResponseDto mapGuardian(Integer studentId, Integer guardianId){
         Optional<Student> studentOpt = studentRepository.findById(studentId);
         Optional<Guardian> guardianOpt = guardianRepository.findById(guardianId);
 
-        if(studentOpt.isPresent() && guardianOpt.isPresent()){
+        if(studentOpt.isPresent() && guardianOpt.isPresent() && studentOpt.get().getStatus().toString().equals("ACTIVE")){
             Guardian guardian = guardianOpt.get();
             Student student = studentOpt.get();
             student.setGuardian(guardian);
             Student saveStudent = studentRepository.save(student);
             return studentMapper.toStudentResponseDto(saveStudent);
         }
-        return null;
+        throw new IllegalArgumentException("Fields is incorrect.");
     }
 
     public StudentResponseDto mapClassRoom(Integer studentId,Integer classroomId){
         Optional<Student> studentOpt = studentRepository.findById(studentId);
         Optional<ClassRoom> classRoomOpt = classRoomRepository.findById(classroomId);
 
-        if(studentOpt.isPresent() && classRoomOpt.isPresent()){
+        if(studentOpt.isPresent() && classRoomOpt.isPresent() && studentOpt.get().getStatus().toString().equals("ACTIVE")){
             Student student = studentOpt.get();
             ClassRoom classRoom = classRoomOpt.get();
 
@@ -97,7 +101,39 @@ public class StudentService {
 
             return studentMapper.toStudentResponseDto(savedStudent);
         }
-        return null;
+        throw new IllegalArgumentException("Fields is incorrect.");
     }
 
+    public StudentResponseDto update(String admissionNumber,StudentDto dto){
+        Optional<Student> studentOpt = studentRepository.findByAdmissionNumber(admissionNumber);
+        if(studentOpt.isPresent() && studentOpt.get().getStatus().toString().equals("ACTIVE")){
+            Student student = studentOpt.get();
+            student.setFirstName(dto.firstName());
+            student.setLastName(dto.lastName());
+            student.setEmail(dto.email());
+            student.setAge(dto.age());
+            student.setDateOfBirth(dto.dateOfBirth());
+            student.setDateOfjoining(dto.dateOfjoining());
+            student.setModifiedBy(admissionNumber);
+            student.setModifiedAt(LocalDateTime.now());
+
+            Student updatedStudent = studentRepository.save(student);
+            return studentMapper.toStudentResponseDto(updatedStudent);
+        }
+        throw new IllegalArgumentException("Student not found");
+    }
+
+    public boolean delete(String admissionNumber){
+        Optional<Student> studentOpt = studentRepository.findByAdmissionNumber(admissionNumber);
+        if(studentOpt.isPresent() && studentOpt.get().getStatus().toString().equals("ACTIVE")){
+            Student student= studentOpt.get();
+            student.setStatus(Status.INACTIVE);
+
+            Student update = studentRepository.save(student);
+            if(update != null)
+                return true;
+            return false;
+        }
+        throw new IllegalArgumentException("Student not found");
+    }
 }

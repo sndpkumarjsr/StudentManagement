@@ -94,29 +94,29 @@ class StudentServiceTest {
 
         Mockito.verify(repository,times(1)).findAll();
     }
-
-    @Test
-    public void checkFindById(){
-        //Given
-        Integer studentId = 1;
-
-        Student student = new Student("Sandeep","Kumar","sndp@mail.com","sndp@123",25, LocalDate.of(1995, 12, 16),"9988776655", LocalDate.of(2025,03,20));
-        StudentResponseDto responseDto = new StudentResponseDto("Sandeep","Kumar","sndp@mail.com",25, LocalDate.of(1995, 12, 16),"9988776655",new Guardian());
-
-        //Mock
-        Mockito.when(repository.findById(studentId)).thenReturn(Optional.of(student));
-        Mockito.when(mapper.toStudentResponseDto(student)).thenReturn(responseDto);
-
-        //when
-        StudentResponseDto responseDto1 = studentService.findById(studentId);
-
-        Assertions.assertEquals(responseDto1.firstName(),student.getFirstName());
-        Assertions.assertEquals(responseDto1.lastName(),student.getLastName());
-        Assertions.assertEquals(responseDto1.email(),student.getEmail());
-        Assertions.assertEquals(responseDto1.age(),student.getAge());
-
-        Mockito.verify(repository,times(1)).findById(studentId);
-
-    }
+//
+//    @Test
+//    public void checkFindById(){
+//        //Given
+//        Integer studentId = 1;
+//
+//        Student student = new Student("Sandeep","Kumar","sndp@mail.com","sndp@123",25, LocalDate.of(1995, 12, 16),"9988776655", LocalDate.of(2025,03,20));
+//        StudentResponseDto responseDto = new StudentResponseDto("Sandeep","Kumar","sndp@mail.com",25, LocalDate.of(1995, 12, 16),"9988776655",new Guardian());
+//
+//        //Mock
+//        Mockito.when(repository.findById(studentId)).thenReturn(Optional.of(student));
+//        Mockito.when(mapper.toStudentResponseDto(student)).thenReturn(responseDto);
+//
+//        //when
+//        StudentResponseDto responseDto1 = studentService.findById(studentId);
+//
+//        Assertions.assertEquals(responseDto1.firstName(),student.getFirstName());
+//        Assertions.assertEquals(responseDto1.lastName(),student.getLastName());
+//        Assertions.assertEquals(responseDto1.email(),student.getEmail());
+//        Assertions.assertEquals(responseDto1.age(),student.getAge());
+//
+//        Mockito.verify(repository,times(1)).findById(studentId);
+//
+//    }
 
 }

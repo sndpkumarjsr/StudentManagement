@@ -1,8 +1,6 @@
 package com.studentmanagement.controller;
 
 import com.studentmanagement.dto.AttendanceDto;
-import com.studentmanagement.entity.Attendance;
-import com.studentmanagement.repository.AttendanceRepository;
 import com.studentmanagement.service.AttendanceService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,10 +43,7 @@ public class AttendanceController {
 
     @PostMapping
     public ResponseEntity<AttendanceDto> addNewAttendance(@RequestBody AttendanceDto attendanceDto){
-        var saved = service.add(attendanceDto);
-        if(saved == null)
-            return ResponseEntity.internalServerError().build();
-        return ResponseEntity.ok(saved);
+        return ResponseEntity.ok(service.add(attendanceDto));
     }
 
     @PostMapping("/saveAll")
@@ -59,4 +54,16 @@ public class AttendanceController {
         return ResponseEntity.ok(list);
     }
 
+    @GetMapping("{studentId}")
+    public ResponseEntity<List<AttendanceDto>> getById(@PathVariable Integer studentId){
+        var list = service.getByStudentId(studentId);
+        if(list.isEmpty())
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(list);
+    }
+
+    @PutMapping
+    public ResponseEntity<AttendanceDto> updateStudent(@RequestBody AttendanceDto dto){
+        return ResponseEntity.ok(service.updateAttendance(dto));
+    }
 }
