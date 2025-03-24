@@ -12,6 +12,6 @@ public record StudentResponseDto(
         int age,
         LocalDate dateOfBirth,
         String phone,
-        Guardian guardian
+        GuardianResponseDto guardian
 ) {
 }

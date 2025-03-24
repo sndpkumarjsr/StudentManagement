@@ -1,5 +1,6 @@
 package com.studentmanagement.util;
 
+import com.studentmanagement.dto.GuardianResponseDto;
 import com.studentmanagement.dto.StudentDto;
 import com.studentmanagement.dto.StudentResponseDto;
 import com.studentmanagement.entity.School;
@@ -8,8 +9,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class StudentMapper {
+
+    private final GuardianMapper guardianMapper;
+
+    public StudentMapper(GuardianMapper guardianMapper) {
+        this.guardianMapper = guardianMapper;
+    }
+
     public StudentResponseDto toStudentResponseDto(Student student){
-        return new StudentResponseDto(student.getAdmissionNumber(),student.getFirstName(),student.getLastName(),student.getEmail(),student.getAge(),student.getDateOfBirth(),student.getPhone(),student.getGuardian());
+        return new StudentResponseDto(student.getAdmissionNumber(),student.getFirstName(),student.getLastName(),student.getEmail(),student.getAge(),student.getDateOfBirth(),student.getPhone(),(student.getGuardian() != null)?guardianMapper.toGuardianResponseDto(student.getGuardian()) : null);
     }
 
     public Student toStudent(StudentDto studentDto){

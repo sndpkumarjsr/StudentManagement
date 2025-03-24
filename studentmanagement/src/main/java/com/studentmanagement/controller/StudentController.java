@@ -32,8 +32,8 @@ public class StudentController {
     }
 
     @GetMapping("/{admissionNumber}")
-    public ResponseEntity<StudentResponseDto> findById(@PathVariable String admissionNumber){
-        return ResponseEntity.ok(studentService.findById(admissionNumber));
+    public ResponseEntity<StudentResponseDto> getByAdmissionNumber(@PathVariable String admissionNumber){
+        return ResponseEntity.ok(studentService.getByAdmissionNumber(admissionNumber));
     }
 
     @PutMapping("/update")
@@ -47,13 +47,13 @@ public class StudentController {
     }
 
     @PutMapping("/guardians")
-    public ResponseEntity<StudentResponseDto> mapGuardian(@RequestParam Integer studentId,@RequestParam Integer guardianId){
-        return ResponseEntity.ok(studentService.mapGuardian(studentId,guardianId));
+    public ResponseEntity<StudentResponseDto> mapGuardian(@RequestParam String studentAdmissionNumber,@RequestParam String guardianEmail){
+        return ResponseEntity.ok(studentService.mapGuardian(studentAdmissionNumber,guardianEmail));
     }
 
     @PutMapping("/classrooms")
-    public ResponseEntity<StudentResponseDto> mapClassRooom(@RequestParam Integer studentId,@RequestParam Integer classroomId){
-        return ResponseEntity.ok(studentService.mapClassRoom(studentId,classroomId));
+    public ResponseEntity<StudentResponseDto> mapClassRooom(@RequestParam String studentAdmissionNumber,@RequestParam Integer classroomId){
+        return ResponseEntity.ok(studentService.mapClassRoom(studentAdmissionNumber,classroomId));
     }
 
     @DeleteMapping

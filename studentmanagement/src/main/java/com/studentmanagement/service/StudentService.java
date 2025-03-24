@@ -41,17 +41,37 @@ public class StudentService {
     }
 
     public StudentResponseDto addStudent(StudentDto studentDto){
-        Student student = studentMapper.toStudent(studentDto);
-        student.setCreatedBy("Admin");
-        student.setCreatedAt(LocalDateTime.now());
-        student.setStatus(Status.ACTIVE );
-        Student savedStudent = studentRepository.save(student);
-        if(savedStudent != null)
-            return studentMapper.toStudentResponseDto(savedStudent);
-        throw new IllegalArgumentException("Fail to save. Please check the fields.");
+        Optional<Student> studentOpt = studentRepository.findByEmail(studentDto.email());
+        if(studentOpt.isPresent() && studentOpt.get().getStatus().toString().equals("INACTIVE")){
+            Student student = studentOpt.get();
+            student.setFirstName(studentDto.firstName());
+            student.setLastName(studentDto.lastName());
+            student.setEmail(studentDto.email());
+            student.setPassword(studentDto.password());
+            student.setAge(studentDto.age());
+            student.setDateOfBirth(studentDto.dateOfBirth());
+            student.setDateOfjoining(studentDto.dateOfjoining());
+            student.setPhone(studentDto.phone());
+            student.setModifiedBy(studentDto.email());
+            student.setModifiedAt(LocalDateTime.now());
+            student.setStatus(Status.ACTIVE);
+            Student savedStudent = studentRepository.save(student);
+            if(savedStudent != null)
+                return studentMapper.toStudentResponseDto(savedStudent);
+            throw new IllegalArgumentException("Fail to save. Please check the fields.");
+        }else{
+            Student student = studentMapper.toStudent(studentDto);
+            student.setCreatedBy("Admin");
+            student.setCreatedAt(LocalDateTime.now());
+            student.setStatus(Status.ACTIVE );
+            Student savedStudent = studentRepository.save(student);
+            if(savedStudent != null)
+                return studentMapper.toStudentResponseDto(savedStudent);
+            throw new IllegalArgumentException("Fail to save. Please check the fields.");
+        }
     }
 
-    public StudentResponseDto findById(String admissionNumber){
+    public StudentResponseDto getByAdmissionNumber(String admissionNumber){
         Optional<Student> studentOpt = studentRepository.findByAdmissionNumber(admissionNumber);
         if(studentOpt.isPresent() && studentOpt.get().getStatus().toString().equals("ACTIVE"))
             return studentMapper.toStudentResponseDto(studentOpt.get());
@@ -71,11 +91,11 @@ public class StudentService {
         throw new IllegalArgumentException("Fields is incorrect.");
     }
 
-    public StudentResponseDto mapGuardian(Integer studentId, Integer guardianId){
-        Optional<Student> studentOpt = studentRepository.findById(studentId);
-        Optional<Guardian> guardianOpt = guardianRepository.findById(guardianId);
+    public StudentResponseDto mapGuardian(String studentAdmissionNumber, String guardianEmail){
+        Optional<Student> studentOpt = studentRepository.findByAdmissionNumber(studentAdmissionNumber);
+        Optional<Guardian> guardianOpt = guardianRepository.findGuardianByEmail(guardianEmail);
 
-        if(studentOpt.isPresent() && guardianOpt.isPresent() && studentOpt.get().getStatus().toString().equals("ACTIVE")){
+        if(studentOpt.isPresent() && guardianOpt.isPresent() && studentOpt.get().getStatus().toString().equals("ACTIVE") && guardianOpt.get().getStatus().toString().equals("ACTIVE")){
             Guardian guardian = guardianOpt.get();
             Student student = studentOpt.get();
             student.setGuardian(guardian);
@@ -85,8 +105,8 @@ public class StudentService {
         throw new IllegalArgumentException("Fields is incorrect.");
     }
 
-    public StudentResponseDto mapClassRoom(Integer studentId,Integer classroomId){
-        Optional<Student> studentOpt = studentRepository.findById(studentId);
+    public StudentResponseDto mapClassRoom(String studentAdmissionNumber,Integer classroomId){
+        Optional<Student> studentOpt = studentRepository.findByAdmissionNumber(studentAdmissionNumber);
         Optional<ClassRoom> classRoomOpt = classRoomRepository.findById(classroomId);
 
         if(studentOpt.isPresent() && classRoomOpt.isPresent() && studentOpt.get().getStatus().toString().equals("ACTIVE")){

@@ -8,6 +8,7 @@ public record GuardianDto(
         LocalDate dateOfBirth,
         String phone,
         String email,
-        String password
+        String password,
+        String admissionNumber
 ) {
 }
