@@ -21,9 +21,6 @@ public class GuardianController {
 
     @PostMapping
     public ResponseEntity<GuardianResponseDto> addNewGuardian(@RequestBody GuardianDto guardianDto) {
-        if (guardianDto == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
         return new ResponseEntity<>(guardianService.add(guardianDto), HttpStatus.CREATED);
     }
 
@@ -35,9 +32,16 @@ public class GuardianController {
 
     @GetMapping("/{email}")
     public ResponseEntity<GuardianResponseDto> getByEmail(@PathVariable String email) {
-        GuardianResponseDto guardianResponseDto = guardianService.getByEmail(email);
-        if(guardianResponseDto == null)
-            return ResponseEntity.badRequest().build();
-        return ResponseEntity.ok(guardianResponseDto);
+        return ResponseEntity.ok(guardianService.getByEmail(email));
+    }
+
+    @PutMapping
+    public ResponseEntity<GuardianResponseDto> update(@RequestBody GuardianDto dto,@RequestParam String email){
+        return ResponseEntity.ok(guardianService.update(dto,email));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> delete(@RequestParam String email){
+        return  new ResponseEntity<>((guardianService.delete(email)) ? HttpStatus.NO_CONTENT : HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

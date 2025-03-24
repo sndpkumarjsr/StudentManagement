@@ -13,9 +13,12 @@ class StudentMapperTest {
 
     private StudentMapper mapper;
 
+    private GuardianMapper guardianMapper;
+
     @BeforeEach
     void setUp() {
-        mapper = new StudentMapper();
+        guardianMapper = new GuardianMapper();
+        mapper = new StudentMapper(guardianMapper);
     }
 
     @Test
