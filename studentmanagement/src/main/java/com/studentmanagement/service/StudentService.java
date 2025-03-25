@@ -9,6 +9,7 @@ import com.studentmanagement.repository.SchoolRepository;
 import com.studentmanagement.repository.StudentRepository;
 import com.studentmanagement.util.StudentMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -40,6 +41,7 @@ public class StudentService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public StudentResponseDto addStudent(StudentDto studentDto){
         Optional<Student> studentOpt = studentRepository.findByEmail(studentDto.email());
         if(studentOpt.isPresent() && studentOpt.get().getStatus().toString().equals("INACTIVE")){
@@ -78,6 +80,7 @@ public class StudentService {
         throw new IllegalArgumentException("Student Not Found");
     }
 
+    @Transactional
     public StudentResponseDto mapSchool(Integer studentId, Integer schoolId){
         Optional<School> schoolOpt = schoolRepository.findById(schoolId);
         Optional<Student> studentOpt = studentRepository.findById(studentId);
@@ -91,6 +94,7 @@ public class StudentService {
         throw new IllegalArgumentException("Fields is incorrect.");
     }
 
+    @Transactional
     public StudentResponseDto mapGuardian(String studentAdmissionNumber, String guardianEmail){
         Optional<Student> studentOpt = studentRepository.findByAdmissionNumber(studentAdmissionNumber);
         Optional<Guardian> guardianOpt = guardianRepository.findGuardianByEmail(guardianEmail);
@@ -105,6 +109,7 @@ public class StudentService {
         throw new IllegalArgumentException("Fields is incorrect.");
     }
 
+    @Transactional
     public StudentResponseDto mapClassRoom(String studentAdmissionNumber,Integer classroomId){
         Optional<Student> studentOpt = studentRepository.findByAdmissionNumber(studentAdmissionNumber);
         Optional<ClassRoom> classRoomOpt = classRoomRepository.findById(classroomId);
@@ -124,6 +129,7 @@ public class StudentService {
         throw new IllegalArgumentException("Fields is incorrect.");
     }
 
+    @Transactional
     public StudentResponseDto update(String admissionNumber,StudentDto dto){
         Optional<Student> studentOpt = studentRepository.findByAdmissionNumber(admissionNumber);
         if(studentOpt.isPresent() && studentOpt.get().getStatus().toString().equals("ACTIVE")){
@@ -143,6 +149,7 @@ public class StudentService {
         throw new IllegalArgumentException("Student not found");
     }
 
+    @Transactional
     public boolean delete(String admissionNumber){
         Optional<Student> studentOpt = studentRepository.findByAdmissionNumber(admissionNumber);
         if(studentOpt.isPresent() && studentOpt.get().getStatus().toString().equals("ACTIVE")){

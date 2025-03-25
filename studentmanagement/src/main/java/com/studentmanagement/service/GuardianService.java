@@ -10,6 +10,7 @@ import com.studentmanagement.repository.GuardianRepository;
 import com.studentmanagement.repository.StudentRepository;
 import com.studentmanagement.util.GuardianMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,6 +32,7 @@ public class GuardianService {
         this.studentService = studentService;
     }
 
+    @Transactional
     public GuardianResponseDto add(GuardianDto guardianDto){
         Optional<Guardian> guardianOptional =  guardianRepository.findGuardianByEmail(guardianDto.email());
         Optional<Student> studentOpt = studentRepository.findByAdmissionNumber(guardianDto.admissionNumber());
@@ -81,6 +83,7 @@ public class GuardianService {
         throw new IllegalArgumentException("User not found");
     }
 
+    @Transactional
     public GuardianResponseDto update(GuardianDto dto,String email){
         Optional<Guardian> guardianOpt =  guardianRepository.findGuardianByEmail(email);
         if(guardianOpt.isPresent()){
@@ -99,6 +102,7 @@ public class GuardianService {
         throw new IllegalArgumentException("Invalid Authenticaltion");
     }
 
+    @Transactional
     public boolean delete(String email){
         Optional<Guardian> guardianOpt = guardianRepository.findGuardianByEmail(email);
         if(guardianOpt.isPresent() && guardianOpt.get().getStudents().stream().filter(i->i.getStatus().toString().equals("INACTIVE")).count() == guardianOpt.get().getStudents().size()){

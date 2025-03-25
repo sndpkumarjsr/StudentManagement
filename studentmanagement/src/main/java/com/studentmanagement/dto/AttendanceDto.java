@@ -8,6 +8,6 @@ public record AttendanceDto(
         LocalDate date,
         ATTENDANCE_STATUS isPresent,
         String remarks,
-        Integer studentId
+        String admissionNumber
 ) {
 }

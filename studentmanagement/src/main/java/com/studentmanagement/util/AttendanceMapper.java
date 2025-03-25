@@ -14,7 +14,7 @@ public class AttendanceMapper {
     }
 
     public AttendanceDto toAttendanceDto(Attendance attendance){
-        return new AttendanceDto(attendance.getDate(),attendance.getIsPresent(),attendance.getRemarks(),attendance.getStudent().getId());
+        return new AttendanceDto(attendance.getDate(),attendance.getIsPresent(),attendance.getRemarks(),attendance.getStudent().getAdmissionNumber());
     }
 
 }
