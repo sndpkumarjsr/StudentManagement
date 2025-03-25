@@ -19,26 +19,17 @@ public class AttendanceController {
 
     @GetMapping
     public ResponseEntity<List<AttendanceDto>> getAll(){
-        var list = service.getAll();
-        if(list.isEmpty())
-            return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(list);
+        return ResponseEntity.ok(service.getAll());
     }
 
     @GetMapping("/presents")
     public ResponseEntity<List<AttendanceDto>> getAllPresent(){
-        var list = service.getAllPresent();
-        if(list.isEmpty())
-            return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(list);
+        return ResponseEntity.ok(service.getAllPresent());
     }
 
     @GetMapping("/absents")
     public ResponseEntity<List<AttendanceDto>> getAllAbsent(){
-        var list = service.getAllAbsent();
-        if(list.isEmpty())
-            return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(list);
+        return ResponseEntity.ok(service.getAllAbsent());
     }
 
     @PostMapping
@@ -48,22 +39,16 @@ public class AttendanceController {
 
     @PostMapping("/saveAll")
     public ResponseEntity<List<AttendanceDto>> addMulAtten(@RequestBody List<AttendanceDto> attendanceDtos){
-        var list = service.addAll(attendanceDtos);
-        if(list.isEmpty())
-            return ResponseEntity.internalServerError().build();
-        return ResponseEntity.ok(list);
+        return ResponseEntity.ok(service.addAll(attendanceDtos));
     }
 
-    @GetMapping("{studentId}")
-    public ResponseEntity<List<AttendanceDto>> getById(@PathVariable Integer studentId){
-        var list = service.getByStudentId(studentId);
-        if(list.isEmpty())
-            return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(list);
+    @GetMapping("{admissionNumber}")
+    public ResponseEntity<List<AttendanceDto>> getById(@PathVariable String admissionNumber){
+        return ResponseEntity.ok(service.getByStudentId(admissionNumber));
     }
 
     @PutMapping
-    public ResponseEntity<AttendanceDto> updateStudent(@RequestBody AttendanceDto dto){
-        return ResponseEntity.ok(service.updateAttendance(dto));
+    public ResponseEntity<AttendanceDto> updateAttendance(@RequestBody AttendanceDto dto,@RequestParam String admissionNumber){
+        return ResponseEntity.ok(service.updateAttendance(dto,admissionNumber));
     }
 }
