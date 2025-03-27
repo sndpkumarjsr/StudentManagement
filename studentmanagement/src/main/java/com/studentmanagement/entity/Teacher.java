@@ -33,6 +33,10 @@ public class Teacher {
     @OneToOne
     @JsonManagedReference
     private Course course;
+    @Column(unique = true,updatable = false)
+    private String facultyId;
+
+    private static Integer sequenceNumber = 1;
 
     public Teacher() {
     }
@@ -44,6 +48,13 @@ public class Teacher {
         this.password = password;
         this.dateOfBirth = dateOfBirth;
         this.phone = phone;
+    }
+
+    @PrePersist
+    private void setFacultyIdNum(){
+        synchronized (Teacher.class) {
+            this.facultyId = "FCT" +String.format("%04d", sequenceNumber++);
+        }
     }
 
     public Integer getId() {
@@ -156,5 +167,13 @@ public class Teacher {
 
     public void setCourse(Course course) {
         this.course = course;
+    }
+
+    public String getFacultyId() {
+        return facultyId;
+    }
+
+    public void setFacultyId(String facultyId) {
+        this.facultyId = facultyId;
     }
 }
