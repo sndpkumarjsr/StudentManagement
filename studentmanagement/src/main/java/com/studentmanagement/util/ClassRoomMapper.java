@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 public class ClassRoomMapper {
 
     public ClassRoom toClassRoom(ClassRoomDto dto){
-        return new ClassRoom(dto.year(), dto.section(),dto.status(), dto.remarks());
+        return new ClassRoom(dto.classRoomNumber(),dto.year(), dto.section(),dto.status(), dto.remarks());
     }
 
     public ClassRoomResponseDto toClassRoomResponseDto(ClassRoom classRoom){
-        return new ClassRoomResponseDto(classRoom.getYear(),classRoom.getSection(),classRoom.getStatus(),classRoom.getRemarks(),classRoom.getStudents());
+        return new ClassRoomResponseDto(classRoom.getClassRoomNumber(),classRoom.getYear(),classRoom.getSection(),classRoom.getStatus(),classRoom.getRemarks(),classRoom.getStudents());
     }
 }

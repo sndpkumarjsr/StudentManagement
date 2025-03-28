@@ -6,6 +6,7 @@ import com.studentmanagement.entity.Student;
 import java.util.List;
 
 public record ClassRoomResponseDto(
+        String classRoomNumber,
         String year,
         char section,
         Status status,

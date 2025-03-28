@@ -29,7 +29,15 @@ public class ClassRoomService {
 
     public List<ClassRoomResponseDto> getAll(){
         return classRoomRepository.findAll()
-                .stream().map(classRoomMapper::toClassRoomResponseDto)
+                .stream()
+                .map(classRoomMapper::toClassRoomResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<ClassRoomResponseDto> getAllActiveClass(){
+        return classRoomRepository.findAll()
+                .stream().parallel().filter(i->i.getStatus().toString().equals("ACTIVE"))
+                .map(classRoomMapper::toClassRoomResponseDto)
                 .collect(Collectors.toList());
     }
 
