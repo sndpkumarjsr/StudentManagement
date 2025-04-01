@@ -17,6 +17,9 @@ public class ClassRoom {
 
     private char section;
 
+    @Column(unique = true)
+    private String classRoomNumber;
+
     @Enumerated(EnumType.STRING)
     private Status status;
 
@@ -48,7 +51,8 @@ public class ClassRoom {
     public ClassRoom() {
     }
 
-    public ClassRoom(String year, char section, Status status, String remarks) {
+    public ClassRoom(String classRoomNumber,String year, char section, Status status, String remarks) {
+        this.classRoomNumber = classRoomNumber;
         this.year = year;
         this.section = section;
         this.status = status;
@@ -141,5 +145,13 @@ public class ClassRoom {
 
     public void setModifiedAt(LocalDateTime modifiedAt) {
         this.modifiedAt = modifiedAt;
+    }
+
+    public String getClassRoomNumber() {
+        return classRoomNumber;
+    }
+
+    public void setClassRoomNumber(String classRoomNumber) {
+        this.classRoomNumber = classRoomNumber;
     }
 }

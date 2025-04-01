@@ -33,8 +33,6 @@ public class ExamTypeService {
         ExamType examType = examTypeMapper.toExamType(examTypeDto);
         examType.setCreatedBy("Admin");
         examType.setCreatedAt(LocalDateTime.now());
-        if(examType == null)
-            return null;
         ExamType savedExamType = examTypeRepository.save(examType);
         return examTypeMapper.toExamTypeDto(savedExamType);
     }
@@ -45,7 +43,33 @@ public class ExamTypeService {
             ExamType examType = examTypeOpt.get();
             return examTypeMapper.toExamTypeDto(examType);
         }
-        return null;
+        throw new IllegalArgumentException("Exam Type not found!!!");
+    }
+
+    public ExamTypeDto update(ExamTypeDto dto, String examName){
+        Optional<ExamType> examTypeOpt = examTypeRepository.findExamTypeByExamName(examName);
+        if(dto.examName().equals(examName) && examTypeOpt.isPresent()){
+            ExamType examType = examTypeOpt.get();
+            examType.setTotalMarks(dto.totalMarks());
+            examType.setPassMarks(dto.passMarks());
+            examType.setDescription(dto.description());
+            examType.setModifiedBy("Admin");
+            examType.setModifiedAt(LocalDateTime.now());
+
+            ExamType update = examTypeRepository.save(examType);
+            return examTypeMapper.toExamTypeDto(update);
+        }
+        throw new IllegalArgumentException("Exam Type not found!!!");
+    }
+
+    public boolean delete(String examName){
+        Optional<ExamType> examTypeOpt = examTypeRepository.findExamTypeByExamName(examName);
+        if(examTypeOpt.isPresent()){
+            ExamType examType = examTypeOpt.get();
+            examTypeRepository.delete(examType);
+            return true;
+        }
+        throw new IllegalArgumentException("Exam Type not found!!!");
     }
 
 }

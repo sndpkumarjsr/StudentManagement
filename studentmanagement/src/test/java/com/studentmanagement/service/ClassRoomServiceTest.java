@@ -34,13 +34,13 @@ class ClassRoomServiceTest {
 
     @Test
     public void getAll(){
-        ClassRoom classRoom = new ClassRoom("2025",'B', Status.ACTIVE,"Classroom is ready");
+        ClassRoom classRoom = new ClassRoom("A-101","2025",'B', Status.ACTIVE,"Classroom is ready");
         classRoom.setId(1);
 
         List<ClassRoom> list = List.of(classRoom);
 
         Mockito.when(classRoomRepository.findAll()).thenReturn(list);
-        Mockito.when(classRoomMapper.toClassRoomResponseDto(Mockito.any(ClassRoom.class))).thenReturn(new ClassRoomResponseDto("2025",'B', Status.ACTIVE,"Classroom is ready",null));
+        Mockito.when(classRoomMapper.toClassRoomResponseDto(Mockito.any(ClassRoom.class))).thenReturn(new ClassRoomResponseDto("A-101","2025",'B', Status.ACTIVE,"Classroom is ready",null));
 
         List<ClassRoomResponseDto> responseDtos = service.getAll();
 
@@ -54,11 +54,11 @@ class ClassRoomServiceTest {
 
     @Test
     public void checkAdd(){
-        ClassRoomDto dto = new ClassRoomDto("2025",'B', Status.ACTIVE,"Classroom is ready");
-        ClassRoom classRoom = new ClassRoom("2025",'B', Status.ACTIVE,"Classroom is ready");
-        ClassRoom savedClassRoom =  new ClassRoom("2025",'B', Status.ACTIVE,"Classroom is ready");
+        ClassRoomDto dto = new ClassRoomDto("A-101","2025",'B', Status.ACTIVE,"Classroom is ready");
+        ClassRoom classRoom = new ClassRoom("A-101","2025",'B', Status.ACTIVE,"Classroom is ready");
+        ClassRoom savedClassRoom =  new ClassRoom("A-101","2025",'B', Status.ACTIVE,"Classroom is ready");
         savedClassRoom.setId(1);
-        ClassRoomResponseDto responseDto = new ClassRoomResponseDto("2025",'B', Status.ACTIVE,"Classroom is ready",null);
+        ClassRoomResponseDto responseDto = new ClassRoomResponseDto("A-101","2025",'B', Status.ACTIVE,"Classroom is ready",null);
 
         Mockito.when(classRoomMapper.toClassRoom(dto)).thenReturn(classRoom);
         Mockito.when(classRoomRepository.save(classRoom)).thenReturn(savedClassRoom);

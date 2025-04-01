@@ -76,6 +76,8 @@ public class Student {
     @Column(unique = true, updatable = false)
     private String admissionNumber;
 
+    private static int sequenceCounter = 1;
+
 
     public Student() {
     }
@@ -93,13 +95,10 @@ public class Student {
 
     @PrePersist
     public void generateAdmissionNumber() {
-        // Example: ADM-2023-0001 (Year + Sequence)
-        this.admissionNumber = "ADM-" + LocalDate.now().getYear() + "-" + String.format("%04d", getNextSequenceValue());
-    }
-    private int getNextSequenceValue() {
-        // Implement logic to get the next sequence value from the database or another source
-        // This is just a placeholder
-        return 1; // Replace with actual logic
+        int year = LocalDate.now().getYear();
+        synchronized (Student.class) {
+            this.admissionNumber = "ADM-" + year + "-" + String.format("%04d", sequenceCounter++);
+        }
     }
 
     public School getSchool() {

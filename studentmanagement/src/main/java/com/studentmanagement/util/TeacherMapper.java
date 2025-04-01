@@ -13,7 +13,7 @@ public class TeacherMapper {
     }
 
     public TeacherResponseDto toTeacherResponseDto(Teacher teacher){
-        return new TeacherResponseDto(teacher.getFirstName(),teacher.getLastName(),teacher.getEmail(),teacher.getPassword(),teacher.getDateOfBirth(),teacher.getPhone(),teacher.getCourse().getName(),teacher.getCourse().getDescription());
+        return new TeacherResponseDto(teacher.getFacultyId(),teacher.getFirstName(),teacher.getLastName(),teacher.getEmail(),teacher.getPassword(),teacher.getDateOfBirth(),teacher.getPhone(),teacher.getCourse().getName(),teacher.getCourse().getDescription());
     }
 
 }

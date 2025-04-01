@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 class ClassRoomMapperTest {
 
@@ -21,7 +20,7 @@ class ClassRoomMapperTest {
 
     @Test
     public void checkToClassRoom(){
-        ClassRoomDto dto = new ClassRoomDto("2025",'A', Status.ACTIVE,"Class Room is Ready");
+        ClassRoomDto dto = new ClassRoomDto("A-101","2025",'A', Status.ACTIVE,"Class Room is Ready");
 
         ClassRoom classRoom = classRoomMapper.toClassRoom(dto);
 
@@ -34,7 +33,7 @@ class ClassRoomMapperTest {
 
     @Test
     public void checkToClassResponseSto(){
-        ClassRoom classRoom = new ClassRoom("2025",'A', Status.ACTIVE,"Class Room is Ready");
+        ClassRoom classRoom = new ClassRoom("A-101","2025",'A', Status.ACTIVE,"Class Room is Ready");
 
         ClassRoomResponseDto responseDto = classRoomMapper.toClassRoomResponseDto(classRoom);
 

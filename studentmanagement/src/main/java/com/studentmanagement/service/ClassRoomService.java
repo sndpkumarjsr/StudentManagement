@@ -29,10 +29,24 @@ public class ClassRoomService {
 
     public List<ClassRoomResponseDto> getAll(){
         return classRoomRepository.findAll()
-                .stream().map(classRoomMapper::toClassRoomResponseDto)
+                .stream()
+                .map(classRoomMapper::toClassRoomResponseDto)
                 .collect(Collectors.toList());
     }
 
+    public List<ClassRoomResponseDto> getAllActive(){
+        return classRoomRepository.findAll()
+                .stream().parallel().filter(i->i.getStatus().toString().equals("ACTIVE"))
+                .map(classRoomMapper::toClassRoomResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<ClassRoomResponseDto> getAllInActive(){
+        return classRoomRepository.findAll()
+                .stream().parallel().filter(i->i.getStatus().toString().equals("INACTIVE"))
+                .map(classRoomMapper::toClassRoomResponseDto)
+                .collect(Collectors.toList());
+    }
 
     public ClassRoomResponseDto add(ClassRoomDto dto){
         ClassRoom classRoom = classRoomMapper.toClassRoom(dto);
@@ -42,7 +56,16 @@ public class ClassRoomService {
         return classRoomMapper.toClassRoomResponseDto(saveClassRoom);
     }
 
-    public ClassRoom mapToGrade(Integer classRoomID, Integer gradeId){
+    public ClassRoomResponseDto getByClassRooomNum(String classRoomNumber){
+        Optional<ClassRoom> classRoomOpt = classRoomRepository.findByClassRoomNumber(classRoomNumber);
+        if(classRoomOpt.isPresent()){
+            ClassRoom classRoom = classRoomOpt.get();
+            return classRoomMapper.toClassRoomResponseDto(classRoom);
+        }
+        throw new IllegalArgumentException("Class room not found!!!");
+    }
+
+    public ClassRoomResponseDto mapToGrade(Integer classRoomID, Integer gradeId){
         Optional<ClassRoom> classRoomOpt = classRoomRepository.findById(classRoomID);
         Optional<Grade> gradeOpt = gradeRepository.findById(gradeId);
 
@@ -53,8 +76,25 @@ public class ClassRoomService {
             classRoom.setGrade(grade);
 
             ClassRoom saveClassRoom = classRoomRepository.save(classRoom);
-            return saveClassRoom;
+            return classRoomMapper.toClassRoomResponseDto(saveClassRoom);
         }
         throw new IllegalArgumentException("Incorrect Data");
+    }
+
+    public ClassRoomResponseDto update(ClassRoomDto dto, String classRoomNumber){
+        Optional<ClassRoom> classRoomOpt = classRoomRepository.findByClassRoomNumber(classRoomNumber);
+        if(classRoomOpt.isPresent()){
+            ClassRoom classRoom = classRoomOpt.get();
+            classRoom.setYear(dto.year());
+            classRoom.setSection(dto.section());
+            classRoom.setStatus(dto.status());
+            classRoom.setRemarks(dto.remarks());
+            classRoom.setModifiedBy("Admin");
+            classRoom.setModifiedAt(LocalDateTime.now());
+
+            ClassRoom updateClassRoom = classRoomRepository.save(classRoom);
+            return classRoomMapper.toClassRoomResponseDto(updateClassRoom);
+        }
+        throw new IllegalArgumentException("Class room not found!!!");
     }
 }

@@ -21,7 +21,7 @@ public class ExamType {
     private String description;
 
     @Column(updatable = false)
-    private String CreatedBy;
+    private String createdBy;
 
     @Column(updatable = false)
     private LocalDateTime createdAt;
@@ -87,11 +87,11 @@ public class ExamType {
     }
 
     public String getCreatedBy() {
-        return CreatedBy;
+        return createdBy;
     }
 
     public void setCreatedBy(String createdBy) {
-        CreatedBy = createdBy;
+        this.createdBy = createdBy;
     }
 
     public LocalDateTime getCreatedAt() {
