@@ -77,7 +77,7 @@ class ExamServiceTest {
         saveExam.setId(1);
 
         Mockito.when(examMapper.toExam(dto)).thenReturn(exam);
-        Mockito.when(examTypeRepository.findById(dto.examTypeId())).thenReturn(Optional.of(examType));
+        Mockito.when(examTypeRepository.findById(dto.examType_examName())).thenReturn(Optional.of(examType));
         Mockito.when(examRepository.save(exam)).thenReturn(saveExam);
         Mockito.when(examMapper.toExamResponseDto(saveExam))
                 .thenReturn(new ExamResponseDto("Class X 'B'  Batch:- 2010 - 2012", LocalDate.of(2025,03,15),"Mid Term",100,33,"must obtain pass marks"));
@@ -88,7 +88,7 @@ class ExamServiceTest {
         Assertions.assertEquals(dto.startDate(),saveResponseDto.startDate());
 
         Mockito.verify(examMapper,Mockito.times(1)).toExam(dto);
-        Mockito.verify(examTypeRepository,Mockito.times(1)).findById(dto.examTypeId());
+        Mockito.verify(examTypeRepository,Mockito.times(1)).findById(dto.examType_examName());
         Mockito.verify(examRepository,Mockito.times(1)).save(exam);
         Mockito.verify(examMapper,Mockito.times(1)).toExamResponseDto(saveExam);
     }
