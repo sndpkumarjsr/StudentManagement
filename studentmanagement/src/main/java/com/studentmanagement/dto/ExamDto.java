@@ -5,6 +5,6 @@ import java.time.LocalDate;
 public record ExamDto(
         String name,
         LocalDate startDate,
-        Integer examTypeId
+        String examType_examName
 ) {
 }

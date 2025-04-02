@@ -38,14 +38,47 @@ public class ExamService {
         Exam exam = examMapper.toExam(examDto);
         exam.setCreatedBy("Admin");
         exam.setCreatedAt(LocalDateTime.now());
-        Optional<ExamType> examTypeOpt = examTypeRepository.findById(examDto.examTypeId());
+        Optional<ExamType> examTypeOpt = examTypeRepository.findExamTypeByExamName(examDto.examType_examName());
         if(examTypeOpt.isPresent()){
             ExamType examType = examTypeOpt.get();
             exam.setExamType(examType);
             Exam saveExam = examRepository.save(exam);
             return examMapper.toExamResponseDto(saveExam);
         }
-        return null;
+        throw new IllegalArgumentException("Exam name not found");
     }
 
+    public ExamResponseDto getByNameAndExamtypeName(String name,String examType_examName){
+        Optional<Exam> examOpt = examRepository.findByNameAndExamTypeExamName(name,examType_examName);
+        if(examOpt.isPresent()){
+            Exam exam = examOpt.get();
+            return examMapper.toExamResponseDto(exam);
+        }
+        throw new IllegalArgumentException("Not found!!!");
+    }
+
+    public ExamResponseDto update(ExamDto dto, String name,String examType_examName){
+        Optional<Exam> examOpt = examRepository.findByNameAndExamTypeExamName(name,examType_examName);
+        if(examOpt.isPresent()){
+            Exam exam = examOpt.get();
+            exam.setStartDate(dto.startDate());
+            exam.setName(dto.name());
+            exam.setModifiedBy("Admin");
+            exam.setModifiedAt(LocalDateTime.now());
+
+            Exam update = examRepository.save(exam);
+            return examMapper.toExamResponseDto(update);
+        }
+        throw new IllegalArgumentException("Not found!!!");
+    }
+
+    public boolean delete(String name,String examType_examName){
+        Optional<Exam> examOpt = examRepository.findByNameAndExamTypeExamName(name,examType_examName);
+        if(examOpt.isPresent()){
+            Exam exam = examOpt.get();
+            examRepository.delete(exam);
+            return true;
+        }
+        throw new IllegalArgumentException("Not found!!!");
+    }
 }
