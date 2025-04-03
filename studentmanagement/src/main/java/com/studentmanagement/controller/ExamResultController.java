@@ -2,8 +2,6 @@ package com.studentmanagement.controller;
 
 import com.studentmanagement.dto.ExamResultDto;
 import com.studentmanagement.dto.ExamResultResponseDto;
-import com.studentmanagement.entity.ExamResult;
-import com.studentmanagement.repository.ExamResultRepository;
 import com.studentmanagement.service.ExamResultService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/grades")
-public class GradeController {
+public class    GradeController {
 
     private final GradeService gradeService;
 
@@ -19,17 +19,26 @@ public class GradeController {
 
     @GetMapping
     public ResponseEntity<List<GradeDto>> getAll(){
-        var list = gradeService.getAll();
-        if(list.isEmpty())
-            return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(list);
+        return ResponseEntity.ok(gradeService.getAll());
     }
 
     @PostMapping
     public ResponseEntity<GradeDto> addNewGrade(@RequestBody GradeDto gradeDto){
-        var grade = gradeService.add(gradeDto);
-        if(grade ==  null)
-            return ResponseEntity.internalServerError().build();
-        return ResponseEntity.ok(grade);
+        return ResponseEntity.ok(gradeService.add(gradeDto));
+    }
+
+    @GetMapping("/{name}/{description}")
+    public ResponseEntity<GradeDto> getByNameAndDescription(@PathVariable String name,@PathVariable String description){
+        return ResponseEntity.ok(gradeService.getByGrade(name,description));
+    }
+
+    @PutMapping("/{name}/{description}")
+    public ResponseEntity<GradeDto> update(@RequestBody GradeDto dto,@PathVariable String name,@PathVariable String description){
+        return ResponseEntity.ok(gradeService.update(dto,name,description));
+    }
+
+    @DeleteMapping("/{name}/{description}")
+    public ResponseEntity<?> delete(@PathVariable String name,@PathVariable String description){
+        return (gradeService.delete(name,description))?ResponseEntity.noContent().build() : ResponseEntity.internalServerError().build();
     }
 }
