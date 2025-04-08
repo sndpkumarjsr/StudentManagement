@@ -21,25 +21,22 @@ public class CourseController {
 
     @GetMapping
     public ResponseEntity<List<CourseResponseDto>> getAll(){
-        var list = service.getAll();
-        if(list.isEmpty())
-            return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(list);
+        return ResponseEntity.ok(service.getAll());
     }
 
     @PostMapping
     public ResponseEntity<CourseDto> addNewCourse(@RequestBody CourseDto courseDto){
-        var savedResponse = service.add(courseDto);
-        if(savedResponse == null)
-            return ResponseEntity.internalServerError().build();
-        return new ResponseEntity<>(savedResponse, HttpStatus.CREATED);
+        return new ResponseEntity<>(service.add(courseDto), HttpStatus.CREATED);
     }
 
-    @PutMapping("/grades")
-    public ResponseEntity<CourseResponseDto> mapToGrade(@RequestParam Integer courseId, @RequestParam Integer gradeId){
-        var response = service.mapToGrade(courseId,gradeId);
-        if(response == null)
-            return ResponseEntity.badRequest().build();
-        return ResponseEntity.ok(response);
+    @PutMapping("/{courseName}/{courseDescription}/grades/{gradeName}/{gradeDescription}")
+    public ResponseEntity<CourseResponseDto> mapToGrade(@PathVariable String courseName, @PathVariable String courseDescription,@PathVariable String gradeName,@PathVariable String gradeDescription){
+        return ResponseEntity.ok(service.mapToGrade(courseName, courseDescription, gradeName, gradeDescription));
     }
+
+    @GetMapping("/{courseName}/{courseDescription}")
+    public ResponseEntity<CourseResponseDto> getByNameAndDescription(@PathVariable String courseName, @PathVariable String courseDescription){
+        return ResponseEntity.ok(service.getByNameAndDescription(courseName,courseDescription));
+    }
+
 }
