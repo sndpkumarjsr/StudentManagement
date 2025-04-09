@@ -3,6 +3,7 @@ package com.studentmanagement.controller;
 import com.studentmanagement.dto.CourseDto;
 import com.studentmanagement.dto.CourseResponseDto;
 import com.studentmanagement.service.CourseService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ public class CourseController {
 
     private final CourseService service;
 
+    @Autowired
     public CourseController(CourseService service) {
         this.service = service;
     }
