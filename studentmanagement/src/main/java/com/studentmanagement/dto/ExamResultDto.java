@@ -2,8 +2,10 @@ package com.studentmanagement.dto;
 
 public record ExamResultDto(
         double marks,
-        Integer examId,
-        Integer studentId,
-        Integer courseId
+        String examName,
+        String examTypeName,
+        String admissionNumber,
+        String courseName,
+        String description
 ) {
 }

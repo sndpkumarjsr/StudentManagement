@@ -9,6 +9,7 @@ import com.studentmanagement.repository.GradeRepository;
 import com.studentmanagement.util.CourseMapper;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -37,28 +38,34 @@ public class CourseService {
         Course course = courseMapper.toCourse(dto);
         course.setCreatedBy("Admin");
         course.setCreatedAt(LocalDateTime.now());
-
         Course savedCourse = courseRepository.save(course);
-
-        if(savedCourse != null)
-            return courseMapper.toCourseDto(savedCourse);
-        return null;
+        return courseMapper.toCourseDto(savedCourse);
     }
 
-    public CourseResponseDto mapToGrade(Integer courseId, Integer gradeId){
-        Optional<Course> courseOpt = courseRepository.findById(courseId);
-        Optional<Grade> gradeOpt = gradeRepository.findById(gradeId);
+    public CourseResponseDto mapToGrade(String courseName, String courseDescription,String gradeName, String gradeDescription){
+        Optional<Course> courseOpt = courseRepository.findByNameAndDescription(courseName,courseDescription);
+        Optional<Grade> gradeOpt = gradeRepository.findByNameAndDescription(gradeName,gradeDescription);
 
         if(courseOpt.isPresent() && gradeOpt.isPresent()){
             Course course = courseOpt.get();
             Grade grade = gradeOpt.get();
 
             course.setGrade(grade);
+            course.setModifiedBy("Admin");
+            course.setModifiedAt(LocalDateTime.now());
 
             Course savedCourse = courseRepository.save(course);
-
             return courseMapper.toCourseResponseDto(savedCourse);
         }
-        return null;
+        throw new IllegalArgumentException("Course and Grade not found!!!");
+    }
+
+    public CourseResponseDto getByNameAndDescription(String name, String description){
+        Optional<Course> courseOpt = courseRepository.findByNameAndDescription(name, description);
+        if(courseOpt.isPresent()){
+            Course course = courseOpt.get();
+            return courseMapper.toCourseResponseDto(course);
+        }
+        throw new IllegalArgumentException("Course not found!!!");
     }
 }

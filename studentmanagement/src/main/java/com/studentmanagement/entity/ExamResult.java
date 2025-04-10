@@ -43,10 +43,11 @@ public class ExamResult {
     public ExamResult() {
     }
 
-    public ExamResult(double marks, Exam exam, Student student) {
+    public ExamResult(double marks, Exam exam, Student student, Course course) {
         this.marks = marks;
         this.exam = exam;
         this.student = student;
+        this.course = course;
     }
 
     public Integer getId() {
