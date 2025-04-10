@@ -1,5 +1,6 @@
 package com.studentmanagement.service;
 
+import com.studentmanagement.dto.ExamDto;
 import com.studentmanagement.dto.ExamResultDto;
 import com.studentmanagement.dto.ExamResultResponseDto;
 import com.studentmanagement.entity.Course;
@@ -46,9 +47,9 @@ public class ExamResultService {
         examResult.setMarks(examResultDto.marks());
 
         // Fetch student and exam
-        Optional<Student> studentOpt = studentRepository.findById(examResultDto.studentId());
-        Optional<Exam> examOpt = examRepository.findById(examResultDto.examId());
-        Optional<Course> courseOpt = courseRepository.findById(examResultDto.courseId());
+        Optional<Student> studentOpt = studentRepository.findByAdmissionNumber(examResultDto.admissionNumber());
+        Optional<Exam> examOpt = examRepository.findByNameAndExamTypeExamName(examResultDto.examName(), examResultDto.examTypeName());
+        Optional<Course> courseOpt = courseRepository.findByNameAndDescription(examResultDto.courseName(), examResultDto.description());
 
 
         if (studentOpt.isPresent() && examOpt.isPresent() && courseOpt.isPresent()) {
@@ -71,4 +72,5 @@ public class ExamResultService {
         // Add logging or return a specific response
         throw new IllegalArgumentException("Student or Exam not found.");
     }
+
 }

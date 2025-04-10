@@ -9,6 +9,7 @@ public record ExamResultResponseDto(
     String examName,
     LocalDate startDate,
     double marks,
+    String admissionNumber,
     String StudentName
 ) {
 }

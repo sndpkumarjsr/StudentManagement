@@ -18,6 +18,7 @@ public class ExamResultMapper {
                 examResult.getExam().getName(),
                 examResult.getExam().getStartDate(),
                 examResult.getMarks(),
+                examResult.getStudent().getAdmissionNumber(),
                 examResult.getStudent().getFirstName()+ " " +examResult.getStudent().getLastName()
                 );
     }
