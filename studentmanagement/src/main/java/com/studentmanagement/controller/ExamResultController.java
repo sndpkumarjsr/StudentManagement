@@ -20,17 +20,17 @@ public class ExamResultController {
 
     @GetMapping
     public ResponseEntity<List<ExamResultResponseDto>> getAll(){
-        var list = examResultService.getAll();
-        if(list.isEmpty())
-            return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(list);
+        return ResponseEntity.ok(examResultService.getAll());
     }
 
     @PostMapping
     public ResponseEntity<ExamResultResponseDto> addNewExamResult(@RequestBody ExamResultDto examResultDto){
-        var examResultResponse = examResultService.add(examResultDto);
-        if(examResultResponse == null)
-            return ResponseEntity.badRequest().build();
-        return ResponseEntity.ok(examResultResponse);
+        return ResponseEntity.ok(examResultService.add(examResultDto));
     }
+
+    @PutMapping
+    public ResponseEntity<ExamResultResponseDto> updateMarks(@RequestBody ExamResultDto dto){
+        return ResponseEntity.ok(examResultService.updateMarks(dto));
+    }
+
 }
