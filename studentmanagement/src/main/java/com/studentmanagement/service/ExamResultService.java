@@ -1,6 +1,7 @@
 package com.studentmanagement.service;
 
-import com.studentmanagement.dto.ExamDto;
+
+import com.studentmanagement.dto.ExamResponseDto;
 import com.studentmanagement.dto.ExamResultDto;
 import com.studentmanagement.dto.ExamResultResponseDto;
 import com.studentmanagement.entity.Course;
@@ -71,6 +72,18 @@ public class ExamResultService {
 
         // Add logging or return a specific response
         throw new IllegalArgumentException("Student or Exam not found.");
+    }
+
+    public ExamResultResponseDto updateMarks(ExamResultDto dto){
+        Optional<ExamResult> examResultOpt = examResultRepository.findByExam_NameAndStudent_AdmissionNumberAndCourse_Name(dto.examName(),dto.admissionNumber(), dto.courseName());
+        if(examResultOpt.isPresent()){
+            ExamResult examResult = examResultOpt.get();
+            examResult.setMarks(dto.marks());
+
+            ExamResult update = examResultRepository.save(examResult);
+            return examResultMapper.toExamResultResponseDto(update);
+        }
+        throw new IllegalArgumentException("Data not found!!!");
     }
 
 }
